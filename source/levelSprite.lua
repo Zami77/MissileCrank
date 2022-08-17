@@ -20,5 +20,4 @@ function LevelSprite:init(curLevel, x, y)
     self:setImage(levelImage)
     self:moveTo(x, y)
     self:add()
-    
 end

@@ -3,6 +3,7 @@ class('GameManager').extends()
 local gfx <const> = playdate.graphics
 local curBackground = nil
 local curLevel = nil
+local target = nil
 
 function GameManager:init()
     -- Set Background
@@ -11,5 +12,6 @@ function GameManager:init()
     -- Set Level
     curLevel = LevelSprite(1)
 
+    -- Set Target
+    target = Target()
 end
-

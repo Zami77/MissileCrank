@@ -8,6 +8,7 @@ import "globals"
 import "LevelSprite"
 import "BackgroundSprite"
 import "GameManager"
+import "Target"
 
 local gfx <const> = playdate.graphics
 
