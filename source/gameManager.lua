@@ -1,16 +1,15 @@
 class('GameManager').extends()
 
 local gfx <const> = playdate.graphics
-local backgroundImage = nil
-local levelImage = nil
-local levelSprite = nil
+local curBackground = nil
+local curLevel = nil
 
 function GameManager:init()
     -- Set Background
-    local curBackground = BackgroundSprite()
+    curBackground = BackgroundSprite()
     
     -- Set Level
-    local curLevel = LevelSprite(1)
+    curLevel = LevelSprite(1)
 
 end
 
