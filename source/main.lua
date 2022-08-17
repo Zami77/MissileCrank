@@ -4,7 +4,16 @@ import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "CoreLibs/crank"
 
+import "globals"
+import "gameManager"
+import "levelSprite"
+
+local gfx <const> = playdate.graphics
+
+gameManagerInit()
+
 -- Main Game Loop
 function playdate.update()
-    playdate.graphics.drawText("Insert Game Here", 0, 0)
+    gfx.sprite.update()
+    playdate.timer.updateTimers()
 end
