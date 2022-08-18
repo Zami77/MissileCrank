@@ -6,6 +6,7 @@ class('Missile').extends(gfx.sprite)
 function Missile:init(originVector, goalVector, speed)
     speed = speed or 5
 
+    -- Create missile
     local missileSize = 4
     local missileImage = gfx.image.new(missileSize * 2, missileSize * 2)
     gfx.pushContext(missileImage)
@@ -17,6 +18,7 @@ function Missile:init(originVector, goalVector, speed)
     self:setImage(missileImage)
     self:setCollideRect(0, 0, self:getSize())
 
+    -- Get missile direction by end point minus start point
     local missileDir =  goalVector - originVector
     missileDir:normalize()
 
@@ -24,18 +26,37 @@ function Missile:init(originVector, goalVector, speed)
     self.speed = speed
     self.goal = goalVector
 
+    -- start missile at Cannon location
     self:setZIndex(missileZIndex)
     self:moveTo(originVector.dx, originVector.dy)
     self:add()
+
+    -- set up explosion animation image table
+    self.explosionSheet = gfx.imagetable.new(9, 9, 32)
+    local res, error = self.explosionSheet:load("images/missile/Explosion-Sheet.png")
+    -- assert(res)
+    self.isExploding = false
+    self.explosionAnimation = nil
+    assert(self.explosionSheet)
+end
+
+function Missile:explosion()
+    self.explosionAnimation = gfx.animation.loop.new(100, self.explosionSheet, false)
+    self.isExploding = true
 end
 
 function Missile:update()
-    local posVector = geometry.vector2D.new(self.x, self.y)
+    if self.isExploding then
+        if not self.explosionAnimation:isValid() then
+            self:remove()
+        end
+        self.explosionAnimation:draw(self.goal.dx, self.goal.dy, gfx.kImageUnflipped)
+    else
+        local posVector = geometry.vector2D.new(self.x, self.y)
 
-    if inVicinityOf(posVector, self.goal) then
-        -- TODO: have missile explode
-        self:remove()
+        if inVicinityOf(posVector, self.goal) then
+            self:explosion()
+        end
+        self:moveBy(self.missileDir.dx * self.speed, self.missileDir.dy * self.speed)
     end
-
-    self:moveBy(self.missileDir.dx * self.speed, self.missileDir.dy * self.speed)
 end

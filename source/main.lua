@@ -3,6 +3,7 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "CoreLibs/crank"
+import "CoreLibs/animation"
 
 import "globals"
 import "levelSprite"
