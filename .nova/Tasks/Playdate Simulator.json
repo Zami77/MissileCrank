@@ -1,0 +1,12 @@
+{
+  "extension" : {
+    "identifier" : "com.panic.Playdate",
+    "name" : "Playdate"
+  },
+  "extensionTemplate" : "simulator",
+  "extensionValues" : {
+    "playdate.main-path" : "source",
+    "playdate.output-path" : "builds",
+    "playdate.product-name" : "MissileCrank"
+  }
+}
