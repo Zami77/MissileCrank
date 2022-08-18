@@ -4,6 +4,8 @@ local gfx <const> = playdate.graphics
 local curBackground = nil
 local curLevel = nil
 local target = nil
+local enemySpawnTimer = nil
+local enemySpawnRate = 5 * 1000 -- 5 seconds
 
 function GameManager:init()
     -- Set Background
@@ -14,4 +16,6 @@ function GameManager:init()
 
     -- Set Target
     target = Target()
+    
+    enemySpawner()
 end

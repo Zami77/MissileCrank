@@ -12,10 +12,20 @@ import "gameManager"
 import "target"
 import "missile"
 import "helper"
+import "enemy"
+import "enemyBasic"
+import "enemySpawner"
 
 local gfx <const> = playdate.graphics
 
-local gameManager = GameManager()
+local gameManager = nil
+
+function init()
+    math.randomseed(playdate.getSecondsSinceEpoch())
+    gameManager = GameManager()
+end
+
+init()
 
 -- Main Game Loop
 function playdate.update()
