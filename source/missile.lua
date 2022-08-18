@@ -32,9 +32,7 @@ function Missile:init(originVector, goalVector, speed)
     self:add()
 
     -- set up explosion animation image table
-    self.explosionSheet = gfx.imagetable.new(9, 9, 32)
-    local res, error = self.explosionSheet:load("images/missile/Explosion-Sheet.png")
-    -- assert(res)
+    self.explosionSheet = gfx.imagetable.new("images/missile/Explosion")
     self.isExploding = false
     self.explosionAnimation = nil
     assert(self.explosionSheet)
@@ -49,6 +47,7 @@ function Missile:update()
     if self.isExploding then
         if not self.explosionAnimation:isValid() then
             self:remove()
+            return
         end
         self.explosionAnimation:draw(self.goal.dx, self.goal.dy, gfx.kImageUnflipped)
     else

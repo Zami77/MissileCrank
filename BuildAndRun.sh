@@ -1,7 +1,7 @@
 compilerPath='/Users/Dan/Developer/PlaydateSDK/bin/pdc'
-simulatorPath='/Users/Dan/Developer/PlaydateSDK/bin/PlaydateSimulator'
+simulatorPath='/Users/Dan/Developer/PlaydateSDK/bin/PlaydateSimulator.app/Contents/MacOS/PlaydateSimulator'
 sourcePath='./source'
-outputPath='./build/MissleCrank.pdx'
+outputPath='./builds/MissleCrank.pdx'
 
 # pdc [sourcepath] [outputpath]
 
@@ -11,9 +11,9 @@ echo "Source path:    $sourcePath"
 echo "Output path:    $outputPath"
 echo ""
 
-[ ! -d "build" ] && echo "Creating build directory..." && mkdir build
+[ ! -d "builds" ] && echo "Creating build directory..." && mkdir builds
 echo "Cleaning build directory..."
-rm -r build/*
+rm -r builds/*
 
 echo "Compile source..."
 $compilerPath $sourcePath $outputPath
