@@ -5,15 +5,16 @@ import "CoreLibs/timer"
 import "CoreLibs/crank"
 
 import "globals"
-import "LevelSprite"
-import "BackgroundSprite"
-import "GameManager"
-import "Target"
+import "levelSprite"
+import "backgroundSprite"
+import "gameManager"
+import "target"
+import "missile"
+import "helper"
 
 local gfx <const> = playdate.graphics
 
 local gameManager = GameManager()
-
 
 -- Main Game Loop
 function playdate.update()

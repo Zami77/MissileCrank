@@ -1,6 +1,7 @@
 local gfx <const> = playdate.graphics
 local geometry <const> = playdate.geometry
 local btnPressed <const> = playdate.buttonIsPressed
+local btnJustPressed <const> = playdate.buttonJustPressed
 local defaultTargetSpeed = 3
 
 class('Target').extends(gfx.sprite)
@@ -37,11 +38,14 @@ function Target:update()
     if btnPressed(playdate.kButtonRight) and self.x < upperBoundX then
         newX += 1
     end
+    if btnJustPressed(playdate.kButtonA) then
+        local originVector = geometry.vector2D.new(screenWidth // 2, screenHeight)
+        local goalVector = geometry.vector2D.new(self.x, self.y)
+        Missile(originVector, goalVector)
+    end
 
     local normalizedVector = geometry.vector2D.new(newX, newY)
     normalizedVector:normalize()
 
-    newX, newY = normalizedVector:unpack()
-
-    self:moveBy(newX * self.targetSpeed, newY * self.targetSpeed)
+    self:moveBy(normalizedVector.dx * self.targetSpeed, normalizedVector.dy * self.targetSpeed)
 end
