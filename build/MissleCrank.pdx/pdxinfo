@@ -1,0 +1,8 @@
+name=Missile Crank
+author=Dan Lungaro
+description=Missile Crank is heavily based off of the classic Missile Command!
+bundleID=com.organization.package
+version=0.0.1
+buildNumber=1
+pdxversion=11200
+buildtime=714119952
