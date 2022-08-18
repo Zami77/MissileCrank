@@ -1,9 +1,15 @@
 local gfx <const> = playdate.graphics
 local geometry <const> = playdate.geometry
+local missileState = {
+    MOVING = 0,
+    EXPLODING = 1
+}
 
 class('Missile').extends(gfx.sprite)
 
 function Missile:init(originVector, goalVector, speed)
+    Missile.super.init(self)
+    
     speed = speed or 5
 
     -- Create missile
@@ -29,33 +35,35 @@ function Missile:init(originVector, goalVector, speed)
     -- start missile at Cannon location
     self:setZIndex(missileZIndex)
     self:moveTo(originVector.dx, originVector.dy)
-    self:add()
 
     -- set up explosion animation image table
-    self.explosionSheet = gfx.imagetable.new(9, 9, 32)
-    local res, error = self.explosionSheet:load("images/missile/Explosion-Sheet.png")
-    -- assert(res)
-    self.isExploding = false
+    self.explosionSheet = gfx.imagetable.new("images/missile/explosion")
+    self.state = missileState.MOVING
     self.explosionAnimation = nil
     assert(self.explosionSheet)
+    
+    self:add()
 end
 
 function Missile:explosion()
     self.explosionAnimation = gfx.animation.loop.new(100, self.explosionSheet, false)
-    self.isExploding = true
+    self.state = missileState.EXPLODING
 end
 
 function Missile:update()
-    if self.isExploding then
+    if self.state == missileState.EXPLODING then
         if not self.explosionAnimation:isValid() then
             self:remove()
+            return
         end
-        self.explosionAnimation:draw(self.goal.dx, self.goal.dy, gfx.kImageUnflipped)
-    else
+        self.explosionAnimation:draw(self.goal.dx, self.goal.dy)
+        self:setImage(self.explosionSheet:getImage(self.explosionAnimation.frame))
+    elseif self.state == missileState.MOVING then
         local posVector = geometry.vector2D.new(self.x, self.y)
 
         if inVicinityOf(posVector, self.goal) then
             self:explosion()
+            return
         end
         self:moveBy(self.missileDir.dx * self.speed, self.missileDir.dy * self.speed)
     end
