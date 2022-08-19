@@ -23,6 +23,8 @@ function Missile:init(originVector, goalVector, speed)
 
     self:setImage(missileImage)
     self:setCollideRect(0, 0, self:getSize())
+    self:setGroups(MissileGroup)
+    self:setCollidesWithGroups(EnemyGroup)
 
     -- Get missile direction by end point minus start point
     local missileDir =  goalVector - originVector
@@ -47,7 +49,22 @@ end
 
 function Missile:explosion()
     self.explosionAnimation = gfx.animation.loop.new(100, self.explosionSheet, false)
+    self:setImage(self.explosionSheet:getImage(self.explosionAnimation.frame))
+    self:setCollideRect(0, 0, self:getSize())
     self.state = missileState.EXPLODING
+end
+
+function Missile:handleCollisions()
+    local actualX, actualY, collisions = self:checkCollisions(self.x, self.y)
+    
+    if collisions then
+        for index, collision in ipairs(collisions) do
+            collidedObj = collision['other']
+            if collidedObj:isa(Enemy) and self:alphaCollision(collidedObj) then
+                collidedObj:explosion()
+            end
+        end
+    end
 end
 
 function Missile:update()
@@ -58,6 +75,9 @@ function Missile:update()
         end
         self.explosionAnimation:draw(self.goal.dx, self.goal.dy)
         self:setImage(self.explosionSheet:getImage(self.explosionAnimation.frame))
+        
+        self:handleCollisions()
+        
     elseif self.state == missileState.MOVING then
         local posVector = geometry.vector2D.new(self.x, self.y)
 
