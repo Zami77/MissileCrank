@@ -1,4 +1,5 @@
 compilerPath='/Users/Dan/Developer/PlaydateSDK/bin/pdc'
+# Shell script does not like spaces, so you'll have to rename PlaydateSimulator.app and PlaydateSimulator to be one word
 simulatorPath='/Users/Dan/Developer/PlaydateSDK/bin/PlaydateSimulator.app/Contents/MacOS/PlaydateSimulator'
 sourcePath='./source'
 outputPath='./builds/MissleCrank.pdx'
