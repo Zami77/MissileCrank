@@ -25,9 +25,13 @@ function Enemy:init(enemyImage)
 	local startVec, goalVec = getStartAndGoalVectors()
 	self:moveTo(startVec.dx, startVec.dy)
 	
-	self.speed = 5
+	local enemyDir = goalVec - startVec
+	enemyDir:normalize()
+	
+	self.speed = 1
 	self.goal = goalVec
 	self.state = enemyStates.MOVING
+	self.enemyDir = enemyDir
 	self:add()
 end
 
@@ -37,7 +41,7 @@ end
 
 function Enemy:update()
 	if self.state == enemyStates.MOVING then
-		self:moveWithCollisions(self.goal.dx + self.speed, self.goal.dy + self.speed)
+		self:moveBy(self.enemyDir.dx * self.speed, self.enemyDir.dy * self.speed)
 		
 		local posVector = geometry.vector2D.new(self.x, self.y)
 		

@@ -49,11 +49,13 @@ end
 
 function Missile:explosion()
     self.explosionAnimation = gfx.animation.loop.new(100, self.explosionSheet, false)
+    self:setImage(self.explosionSheet:getImage(self.explosionAnimation.frame))
+    self:setCollideRect(0, 0, self:getSize())
     self.state = missileState.EXPLODING
 end
 
 function Missile:handleCollisions()
-    local actualX, actualY, collisions = self:checkCollisions(self.goal.dx, self.goal.dy)
+    local actualX, actualY, collisions = self:checkCollisions(self.x, self.y)
     
     if collisions then
         for index, collision in ipairs(collisions) do
