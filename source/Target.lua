@@ -21,21 +21,17 @@ end
 function Target:update()
     local newX = 0
     local newY = 0
-    local upperBoundX = screenWidth
-    local lowerBoundX = 0
-    local upperBoundY = screenHeight
-    local lowerBoundY = 0
 
-    if btnPressed(playdate.kButtonUp) and self.y > lowerBoundY then
+    if btnPressed(playdate.kButtonUp) and self.y > 0 then
         newY += -1
     end
-    if btnPressed(playdate.kButtonDown) and self.y < upperBoundY then
+    if btnPressed(playdate.kButtonDown) and self.y < screenHeight then
         newY += 1
     end
-    if btnPressed(playdate.kButtonLeft) and self.x > lowerBoundX then
+    if btnPressed(playdate.kButtonLeft) and self.x > 0 then
         newX += -1
     end
-    if btnPressed(playdate.kButtonRight) and self.x < upperBoundX then
+    if btnPressed(playdate.kButtonRight) and self.x < screenWidth then
         newX += 1
     end
     if btnJustPressed(playdate.kButtonA) then
