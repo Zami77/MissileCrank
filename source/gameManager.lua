@@ -1,21 +1,22 @@
 class('GameManager').extends()
 
 local gfx <const> = playdate.graphics
-local curBackground = nil
-local curLevel = nil
+local backgroundManager = nil
+local levelManager = nil
 local target = nil
-local enemySpawnTimer = nil
-local enemySpawnRate = 5 * 1000 -- 5 seconds
+local spawner = nil
+
 
 function GameManager:init()
     -- Set Background
-    curBackground = BackgroundSprite()
+    backgroundManager = Background()
     
     -- Set Level
-    curLevel = LevelSprite(1)
+    levelManager = Level()
 
     -- Set Target
     target = Target()
     
-    enemySpawner()
+    spawner = EnemySpawner()
+    spawner:startSpawner()
 end
