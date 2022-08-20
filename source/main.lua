@@ -6,15 +6,16 @@ import "CoreLibs/crank"
 import "CoreLibs/animation"
 
 import "globals"
-import "levelSprite"
-import "backgroundSprite"
+import "enemySpawner"
+import "level"
+import "background"
 import "gameManager"
 import "target"
 import "missile"
+import "city"
 import "helper"
 import "enemy"
 import "enemyBasic"
-import "enemySpawner"
 
 local gfx <const> = playdate.graphics
 
