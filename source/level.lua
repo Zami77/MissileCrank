@@ -18,7 +18,6 @@ function Level:createCities(numCities)
         self.cities[i] = City((screenWidth // numCities) * (i - 1) + 32)
         self.cities[i]:add()
     end
-    printTable(self.cities)
 end
 
 function Level:init(numCities, curLevel, x, y)
