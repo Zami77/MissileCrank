@@ -1,15 +1,15 @@
 local gfx <const> = playdate.graphics
 
-class('BackgroundSprite').extends(playdate.graphics.sprite)
+class('Background').extends(playdate.graphics.sprite)
 
 local backgroundMap = {
     [0] = "DefaultBackground"
 }
 
-function BackgroundSprite:init(curBackground)
+function Background:init(curBackground)
     curBackground = curBackground or 0
 
-    BackgroundSprite.super.init(self)
+    Background.super.init(self)
 
     local backgroundImage = nil
     backgroundImage = gfx.image.new("images/backgrounds/" .. backgroundMap[curBackground])
