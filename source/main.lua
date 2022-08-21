@@ -33,4 +33,5 @@ init()
 function playdate.update()
     gfx.sprite.update()
     playdate.timer.updateTimers()
+    gameManager:update()
 end

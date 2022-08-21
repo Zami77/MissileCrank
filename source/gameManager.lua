@@ -9,12 +9,16 @@ local ui = nil
 
 
 function GameManager:init()
-    --backgroundManager = Background()
+    backgroundManager = Background()
     levelManager = Level()
     target = Target()
     
     spawner = EnemySpawner()
     spawner:startSpawner()
     
-    ui = UIOverlay()
+    ui = UIOverlay(target)
+end
+
+function GameManager:update()
+    ui:update()
 end
