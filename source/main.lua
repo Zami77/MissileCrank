@@ -16,6 +16,7 @@ import "city"
 import "helper"
 import "enemy"
 import "enemyBasic"
+import "uiOverlay"
 
 local gfx <const> = playdate.graphics
 

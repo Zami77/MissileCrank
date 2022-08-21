@@ -5,6 +5,7 @@ levelZIndex = 0
 cityZIndex = 1
 enemyZIndex = 2
 missileZIndex = 5
+targetZIndex = 6
 uiZindex = 7
 
 EnemyGroup = 1

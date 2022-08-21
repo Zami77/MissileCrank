@@ -16,8 +16,8 @@ function Target:init(targetSpeed, maxMissiles)
 
     self:setImage(targetImage)
     self:moveTo(screenWidth // 2, screenHeight // 2)
+    self:setZIndex(targetZIndex)
     self:add()
-    self:markDirty()
 end
 
 function Target:handleMovement()
@@ -49,13 +49,11 @@ function Target:handleFire()
         local goalVector = geometry.vector2D.new(self.x, self.y)
         Missile(originVector, goalVector)
         self.curMissiles -= 1
-        self:markDirty()
     end
 end
 
 function Target:reload()
     self.curMissiles = math.min(self.curMissiles + 1, self.maxMissiles)
-    self:markDirty()
 end
 
 function Target:handleReload()

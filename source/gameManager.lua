@@ -5,18 +5,16 @@ local backgroundManager = nil
 local levelManager = nil
 local target = nil
 local spawner = nil
+local ui = nil
 
 
 function GameManager:init()
-    -- Set Background
-    backgroundManager = Background()
-    
-    -- Set Level
+    --backgroundManager = Background()
     levelManager = Level()
-
-    -- Set Target
     target = Target()
     
     spawner = EnemySpawner()
     spawner:startSpawner()
+    
+    ui = UIOverlay()
 end
