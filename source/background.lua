@@ -18,7 +18,6 @@ function Background:init(curBackground)
     gfx.sprite.setBackgroundDrawingCallback(
         function (x, y, width, height)
             backgroundImage:draw(0, 0)
-            
         end
     )
 end

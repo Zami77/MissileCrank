@@ -16,6 +16,7 @@ import "city"
 import "helper"
 import "enemy"
 import "enemyBasic"
+import "uiOverlay"
 
 local gfx <const> = playdate.graphics
 
@@ -32,4 +33,5 @@ init()
 function playdate.update()
     gfx.sprite.update()
     playdate.timer.updateTimers()
+    gameManager:update()
 end

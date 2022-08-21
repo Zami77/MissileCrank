@@ -5,6 +5,8 @@ levelZIndex = 0
 cityZIndex = 1
 enemyZIndex = 2
 missileZIndex = 5
+targetZIndex = 6
+uiZindex = 7
 
 EnemyGroup = 1
 MissileGroup = 2
@@ -13,3 +15,6 @@ CityGroup = 3
 EnemyTypes = {
 	ENEMY_BASIC
 }
+
+-- Controls
+FireButton = playdate.kButtonA
