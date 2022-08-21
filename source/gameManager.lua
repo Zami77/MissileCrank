@@ -21,4 +21,6 @@ end
 
 function GameManager:update()
     ui:update()
+    print("Score: " .. target:getScore())
+    print("Scraps: " .. target:getScraps())
 end

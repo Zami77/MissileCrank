@@ -13,7 +13,9 @@ end
 
 class('Enemy').extends(gfx.sprite)
 
-function Enemy:init(enemyImage)
+function Enemy:init(enemyImage, pointsVal, scrapsVal)
+	pointsVal = pointsVal or 10
+	scrapsVal = scrapsVal or 1
 	assert(enemyImage)
 	Enemy.super.init(self)
 	
@@ -33,7 +35,21 @@ function Enemy:init(enemyImage)
 	self.goal = goalVec
 	self.state = enemyStates.MOVING
 	self.enemyDir = enemyDir
+	self.pointsVal = pointsVal
+	self.scrapsVal = scrapsVal
 	self:add()
+end
+
+function Enemy:isAlive()
+	return self.state == enemyStates.MOVING
+end
+
+function Enemy:getPoints()
+	return self.pointsVal
+end
+
+function Enemy:getScraps()
+	return self.scrapsVal
 end
 
 function Enemy:explosion()

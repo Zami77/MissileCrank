@@ -7,7 +7,8 @@ local missileState = {
 
 class('Missile').extends(gfx.sprite)
 
-function Missile:init(originVector, goalVector, speed)
+function Missile:init(originVector, goalVector, targetRef, speed)
+    assert(targetRef)
     Missile.super.init(self)
     
     speed = speed or 5
@@ -33,6 +34,7 @@ function Missile:init(originVector, goalVector, speed)
     self.missileDir = missileDir
     self.speed = speed
     self.goal = goalVector
+    self.targetRef = targetRef
 
     -- start missile at Cannon location
     self:setZIndex(missileZIndex)
@@ -60,7 +62,9 @@ function Missile:handleCollisions()
     if collisions then
         for index, collision in ipairs(collisions) do
             collidedObj = collision['other']
-            if collidedObj:isa(Enemy) and self:alphaCollision(collidedObj) then
+            if collidedObj:isa(Enemy) and collidedObj:isAlive() and self:alphaCollision(collidedObj) then
+                self.targetRef:addScore(collidedObj:getPoints())
+                self.targetRef:addScraps(collidedObj:getScraps())
                 collidedObj:explosion()
             end
         end
