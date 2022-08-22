@@ -36,7 +36,7 @@ function Level:setLevelBackground()
     )
 end
 
-function Level:init(numCities, curLevel, x, y)
+function Level:init(curLevel, numCities, x, y)
     x = x or screenWidth // 2
     y = y or screenHeight - 20
     self.level = curLevel or 1
