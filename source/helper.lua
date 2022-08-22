@@ -6,9 +6,3 @@ end
 function secondsToMs(seconds)
     return seconds * 1000
 end
-
-function createEnemy(enemyType)
-    if enemyType == EnemyTypes.BasicEnemy then
-        return EnemyBasic()
-    end
-end

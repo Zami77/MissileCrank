@@ -29,6 +29,8 @@ local gameManager = nil
 function init()
     math.randomseed(playdate.getSecondsSinceEpoch())
     gameManager = GameManager()
+    -- Adjust this value for screen shutter
+    playdate.setGCScaling(0, 0)
 end
 
 init()
