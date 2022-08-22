@@ -11,6 +11,7 @@ function Target:init(gameManager, targetSpeed, maxMissiles)
     self.maxMissiles = maxMissiles or 5
     self.curMissiles = self.maxMissiles
     self.gameManager = gameManager
+    self.missilesFired = {}
     
     Target.super.init(self)
 
@@ -21,6 +22,12 @@ function Target:init(gameManager, targetSpeed, maxMissiles)
     self:moveTo(screenWidth // 2, screenHeight // 2)
     self:setZIndex(targetZIndex)
     self:add()
+end
+
+function Target:removeMissiles()
+    for i=1, #self.missilesFired, 1 do
+        self.missilesFired[i]:remove()
+    end
 end
 
 function Target:handleMovement()
@@ -50,7 +57,7 @@ function Target:handleFire()
     if btnJustPressed(FireButton) and self.curMissiles > 0 then
         local originVector = geometry.vector2D.new(screenWidth // 2, screenHeight)
         local goalVector = geometry.vector2D.new(self.x, self.y)
-        Missile(originVector, goalVector, self.gameManager)
+        self.missilesFired[#self.missilesFired+1] =  Missile(originVector, goalVector, self.gameManager)
         self.curMissiles -= 1
     end
 end

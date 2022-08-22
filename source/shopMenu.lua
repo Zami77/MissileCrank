@@ -48,7 +48,9 @@ end
 
 function ShopMenu:init(gameManager)
 	self.gameManager = gameManager
-	self.popupTimer = nil
+	self.startTimer = pd.timer.new(1000)
+	self.popupTimer = pd.timer.new(0)
+	self.popupText = ''
 
 	self:fillItemOptions()
 	
@@ -79,6 +81,10 @@ function gridview:drawCell(section, row, column, selected, x, y, width, height)
 	gfx.popContext()
 end
 
+function ShopMenu:startPopupTimer()
+	self.popupTimer = pd.timer.new(3000)
+end
+
 function ShopMenu:getTargetUpgradePrice()
 	return (self.gameManager:getTargetSpeed() + 1) * baseTargetPrice
 end
@@ -103,21 +109,27 @@ function ShopMenu:HandleMenuSelect()
 		if self.gameManager:getScraps() >= tgtPrice then
 			self.gameManager:removeScraps(tgtPrice)
 			self.gameManager:upgradeTargetSpeed(1)
+			self.popupText = "Upgraded Target Speed!"
 		else
-			print("Not enough scraps")
+			self.popupText = 'Not enough scraps'
 		end
+		self:startPopupTimer()
 	elseif selectedOption == missileUpgrade then
 		local missilePrice = self:getMissileUpgradePrice()
 		if self.gameManager:getScraps() >= missilePrice then
 			self.gameManager:removeScraps(missilePrice)
 			self.gameManager:upgradeMaxMissiles(1)
+			self.popupText = "Upgraded Max Missiles!"
 		else
-			print("Not enough scraps")
+			self.popupText = 'Not enough scraps'
 		end
+		self:startPopupTimer()
 	elseif selectedOption == convertScrap then
 		local totalScraps = self.gameManager:getScraps()
 		self.gameManager:removeScraps(totalScraps)
 		self.gameManager:addScore(totalScraps)
+		self.popupText = "Converted " .. totalScraps .. " Scrap!"
+		self:startPopupTimer()
 	end
 end
 
@@ -139,7 +151,35 @@ function ShopMenu:displayPrice()
 	gfx.popContext()
 end
 
+function ShopMenu:displayPopup()
+	local popupWidth = 200
+	local popupHeight = gfx.getSystemFont():getHeight()
+	gfx.pushContext()
+		gfx.setImageDrawMode(gfx.kDrawModeFillBlack)
+		gfx.drawTextInRect(self.popupText, screenWidth // 2 - popupWidth // 2, screenHeight // 4 - popupHeight, popupWidth, popupHeight, nil, nil, kTextAlignment.center)
+	gfx.popContext()
+end
+
 function ShopMenu:update()
+	if gridview.needsDisplay then
+		local gridviewImage = gfx.image.new(200, 100)
+		gfx.pushContext(gridviewImage)
+		gridview:drawInRect(0, 0, 200, 100)
+		gfx.popContext()
+		gridviewSprite:setImage(gridviewImage)
+	end
+	
+	self:displayPrice()
+
+	if self.popupTimer.timeLeft > 0 then
+		self:displayPopup()
+	end
+
+	-- To help prevent mashing confirmation accidentally
+	if self.startTimer.timeLeft > 0 then
+		return
+	end
+
 	if pd.buttonJustPressed(pd.kButtonUp) then
 		gridview:selectPreviousRow(true)
 	elseif pd.buttonJustPressed(pd.kButtonDown) then
@@ -147,14 +187,4 @@ function ShopMenu:update()
 	elseif pd.buttonJustPressed(pd.kButtonA) then
 		self:HandleMenuSelect()
 	end
-	
-	if gridview.needsDisplay then
-		local gridviewImage = gfx.image.new(200, 100)
-		gfx.pushContext(gridviewImage)
-			gridview:drawInRect(0, 0, 200, 100)
-		gfx.popContext()
-		gridviewSprite:setImage(gridviewImage)
-	end
-
-	self:displayPrice()
 end

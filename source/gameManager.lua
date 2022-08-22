@@ -14,6 +14,9 @@ local target = nil
 local spawner = nil
 local ui = nil
 
+local startSpawnRate = 5000
+local startTargetSpeed = 3
+local startMaxMissiles = 5
 
 function GameManager:init()
     GameManager.super.init(self)
@@ -23,9 +26,13 @@ function GameManager:init()
     self.curLevel = 1
     self.state = gameStates.MAIN_MENU
     self.cities = nil
-    self.spawnRate = 5
-    self.targetSpeed = 3
-    self.maxMissiles = 5
+    self.spawnRate = startSpawnRate
+    self.targetSpeed = startTargetSpeed
+    self.maxMissiles = startMaxMissiles
+
+    self.gameOverScore = self.score
+    self.gameOverScraps = self.scraps
+    self.gameOverLevel = self.curLevel
     
     self.levelManager = nil
     self.target = nil
@@ -111,6 +118,7 @@ function GameManager:deactivateLevel()
     end
     
     if self.target then
+        self.target:removeMissiles()
         self.target:remove()
     end
     
@@ -121,6 +129,31 @@ function GameManager:deactivateLevel()
     if self.ui then
         self.ui:remove()
     end
+end
+
+function GameManager:clearStats()
+    self.gameOverScore = self.score
+    self.gameOverScraps = self.scraps
+    self.gameOverLevel = self.curLevel
+
+    self.score = 0
+    self.scraps = 0
+    self.curLevel = 1
+    self.cities = nil
+    self.spawnRate = startSpawnRate
+    self.targetSpeed = startTargetSpeed
+    self.maxMissiles = startMaxMissiles
+end
+
+function GameManager:levelSuccess()
+    self.curLevel += 1
+    self.spawnRate = math.max(math.floor(0.9 * self.spawnRate), 1000)
+    self:setupShopMenu()
+end
+
+function GameManager:levelFailure()
+    self:clearStats()
+    self:setupGameOver()
 end
 
 function GameManager:addScraps(numScraps)
@@ -171,6 +204,10 @@ end
 
 function GameManager:upgradeTargetSpeed(addSpeed)
     self.targetSpeed += addSpeed
+end
+
+function GameManager:getGameOverStats()
+    return self.gameOverScore, self.gameOverScraps, self.gameOverLevel
 end
 
 function GameManager:update()

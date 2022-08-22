@@ -28,6 +28,8 @@ function GameOver:init(gameManager)
 	self:add()
     
     self:setBackground()
+
+    self.gameOverScore, self.gameOverScraps, self.gameOverLevel = self.gameManager:getGameOverStats()
 end
 
 
@@ -35,9 +37,10 @@ function GameOver:update()
 	gfx.pushContext()
 		gfx.setImageDrawMode(gfx.kDrawModeFillBlack)
 		--gfx.drawTextInRect("Max Missiles: " .. self.targetRef.maxMissiles, screenWidth // 2, screenHeight // 2, 100, 100)
-        gfx.drawTextInRect("Score: " .. self.gameManager:getScore(), screenWidth // 2 - self.textBoxWidth // 2, screenHeight // 2 - self.textBoxHeight // 2, self.textBoxWidth, self.textBoxHeight, nil, nil, kTextAlignment.center)
-        gfx.drawTextInRect("Scraps: " .. self.gameManager:getScraps(), screenWidth // 2 - self.textBoxWidth // 2, screenHeight // 2 + self.textBoxHeight // 2, self.textBoxWidth, self.textBoxHeight, nil, nil, kTextAlignment.center)
-        
+        gfx.drawTextInRect("Score: " .. self.gameOverScore, screenWidth // 2 - self.textBoxWidth // 2, screenHeight // 2 - self.textBoxHeight // 2, self.textBoxWidth, self.textBoxHeight, nil, nil, kTextAlignment.center)
+        gfx.drawTextInRect("Scraps: " .. self.gameOverScraps, screenWidth // 2 - self.textBoxWidth // 2, screenHeight // 2 + self.textBoxHeight // 2, self.textBoxWidth, self.textBoxHeight, nil, nil, kTextAlignment.center)
+        --gfx.drawTextInRect("Max Missiles: " .. self.gameOverScraps, screenWidth // 2 - self.textBoxWidth // 2, screenHeight // 2 + self.textBoxHeight // 2, self.textBoxWidth, self.textBoxHeight, nil, nil, kTextAlignment.center)
+
 
         gfx.drawTextInRect("Press B to go to Main Menu...", screenWidth // 2 - self.textBoxWidth // 2, screenHeight - self.textBoxHeight, self.textBoxWidth, self.textBoxHeight, nil, nil, kTextAlignment.center)
 	gfx.popContext()

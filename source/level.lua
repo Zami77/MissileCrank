@@ -19,8 +19,16 @@ function Level:loadLevel()
 end
 
 function Level:createCities(numCities)
+    self.cities = {}
+
     for i=1, numCities, 1 do
         self.cities[i] = City((screenWidth // numCities) * (i - 1) + 32)
+        self.cities[i]:add()
+    end
+end
+
+function Level:loadCities()
+    for i=1, #self.cities, 1 do
         self.cities[i]:add()
     end
 end
@@ -43,16 +51,19 @@ function Level:init(gameManager, curLevel, cities, levelLength, x, y)
     levelLength = levelLength or 3
     self.level = curLevel or 1
     local numCities = 5
-    self.cities = cities or {}
+
+    self.cities = cities or nil
     self.gameManager = gameManager
 
     Level.super.init(self)
     
     self:loadLevel()
+
     if not self.cities then
         self:createCities(numCities)
+    else
+        self:loadCities()
     end
-    self:createCities(numCities)
     
     self:moveTo(x, y)
     self:add()
@@ -81,15 +92,23 @@ function Level:cleanup()
 
 end
 
+function Level:levelSuccess()
+    self:cleanup()
+    self.gameManager:levelSuccess()
+end
+
+function Level:levelFailure()
+    self:cleanup()
+    self.gameManager:levelFailure()
+end
+
 function Level:update()
     if not self:areCitiesAlive() then
-        self:cleanup()
-        self.gameManager:setupGameOver()
+        self:levelFailure()
     end
 
     if self.levelTimer.timeLeft == 0 then
-        self:cleanup()
-        self.gameManager:setupShopMenu()
+        self:levelSuccess()
     end
 end
 
