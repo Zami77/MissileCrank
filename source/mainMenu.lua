@@ -26,15 +26,17 @@ function MainMenu:init()
 end
 
 function gridview:drawCell(section, row, column, selected, x, y, width, height)
-	if selected then
-		gfx.fillRoundRect(x, y, width, height, 4)
-		gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-	else
-		gfx.setImageDrawMode(gfx.kDrawModeCopy)
-	end
-	
-	local fontHeight = gfx.getSystemFont():getHeight()
-	gfx.drawTextInRect(menuOptions[row], x, y + (height // 2 - fontHeight // 2), width, height, nil, nil, kTextAlignment.center)
+	gfx.pushContext()
+		if selected then
+			gfx.fillRoundRect(x, y, width, height, 4)
+			gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
+		else
+			gfx.setImageDrawMode(gfx.kDrawModeCopy)
+		end
+		
+		local fontHeight = gfx.getSystemFont():getHeight()
+		gfx.drawTextInRect(menuOptions[row], x, y + (height // 2 - fontHeight // 2), width, height, nil, nil, kTextAlignment.center)
+	gfx.popContext()
 end
 
 function MainMenu:update()
