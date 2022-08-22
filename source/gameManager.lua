@@ -115,19 +115,23 @@ function GameManager:deactivateLevel()
     
     if self.levelManager then
         self.levelManager:remove()
+        self.levelManager = nil
     end
     
     if self.target then
         self.target:removeMissiles()
         self.target:remove()
+        self.target = nil
     end
     
     if self.spawner then
         self.spawner:stopSpawner()
+        self.spawner = nil
     end
     
     if self.ui then
         self.ui:remove()
+        self.ui = nil
     end
 end
 

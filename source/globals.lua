@@ -12,10 +12,6 @@ EnemyGroup = 1
 MissileGroup = 2
 CityGroup = 3
 
-EnemyTypes = {
-	ENEMY_BASIC
-}
-
 -- Controls
 FireButton = playdate.kButtonA
 ConfirmationButton = playdate.kButtonA

@@ -13,8 +13,8 @@ local missileUpgrade = 'Max Missiles++'
 local convertScrap = 'Convert Scrap'
 local exitShop = 'Exit Shop'
 
-local baseTargetPrice = 25
-local baseMissilePrice = 25
+local baseTargetPrice = 20
+local baseMissilePrice = 10
 
 class('ShopMenu').extends(gfx.sprite)
 
