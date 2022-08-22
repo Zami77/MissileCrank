@@ -40,7 +40,7 @@ end
 function Level:init(gameManager, curLevel, cities, levelLength, x, y)
     x = x or screenWidth // 2
     y = y or screenHeight - 20
-    levelLength = levelLength or 30
+    levelLength = levelLength or 3
     self.level = curLevel or 1
     local numCities = 5
     self.cities = cities or {}
@@ -89,7 +89,7 @@ function Level:update()
 
     if self.levelTimer.timeLeft == 0 then
         self:cleanup()
-        self.gameManager:setupMainMenu()
+        self.gameManager:setupShopMenu()
     end
 end
 

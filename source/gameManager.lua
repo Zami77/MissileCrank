@@ -23,7 +23,9 @@ function GameManager:init()
     self.curLevel = 1
     self.state = gameStates.MAIN_MENU
     self.cities = nil
-    self.spawnRate = 1
+    self.spawnRate = 5
+    self.targetSpeed = 3
+    self.maxMissiles = 5
     
     self.levelManager = nil
     self.target = nil
@@ -33,6 +35,8 @@ function GameManager:init()
     self.mainMenu = nil
 
     self.gameOver = nil
+
+    self.shopMenu = nil
     
     self:setupMainMenu()
 end
@@ -40,6 +44,7 @@ end
 function GameManager:setupMainMenu()
     self:deactivateLevel()
     self:deactivateGameOver()
+    self:deactivateShopMenu()
     gfx.clear()
     -- TODO: deactivate shop menu
     self.state = gameStates.MAIN_MENU
@@ -52,9 +57,26 @@ function GameManager:deactivateMainMenu()
     end
 end
 
+function GameManager:setupShopMenu()
+    self:deactivateLevel()
+    self:deactivateGameOver()
+    self:deactivateMainMenu()
+    gfx.clear()
+    -- TODO: deactivate shop menu
+    self.state = gameStates.SHOP_MENU
+    self.shopMenu = ShopMenu(self)
+end
+
+function GameManager:deactivateShopMenu()
+    if self.shopMenu then
+        self.shopMenu:remove()
+    end
+end
+
 function GameManager:setupGameOver()
     self:deactivateLevel()
     self:deactivateMainMenu()
+    self:deactivateShopMenu()
     gfx.clear()
     self.state = gameStates.GAME_OVER
     self.gameOver = GameOver(self)
@@ -69,12 +91,13 @@ end
 function GameManager:setupLevel()
     self:deactivateMainMenu()
     self:deactivateGameOver()
+    self:deactivateShopMenu()
     gfx.clear()
     -- TODO: deactivate shop menu
     
     self.state = gameStates.LEVEL
     self.levelManager = Level(self, self.curLevel, self.cities)
-    self.target = Target(self)
+    self.target = Target(self, self.targetSpeed, self.maxMissiles)
     self.spawner = EnemySpawner(self.spawnRate)
     self.spawner:startSpawner()
     self.ui = UIOverlay(self, self.target)
@@ -134,10 +157,27 @@ function GameManager:setCities(cities)
     self.cities = cities
 end
 
+function GameManager:getMaxMissiles()
+    return self.maxMissiles
+end
+
+function GameManager:upgradeMaxMissiles(addMissiles)
+    self.maxMissiles += addMissiles
+end
+
+function GameManager:getTargetSpeed()
+    return self.targetSpeed
+end
+
+function GameManager:upgradeTargetSpeed(addSpeed)
+    self.targetSpeed += addSpeed
+end
+
 function GameManager:update()
     if self.state == gameStates.MAIN_MENU then
         self.mainMenu:update()
     elseif self.state == gameStates.SHOP_MENU then
+        self.shopMenu:update()
     elseif self.state == gameStates.LEVEL then
         self.ui:update()
     elseif self.state == gameStates.GAME_OVER then
