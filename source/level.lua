@@ -48,7 +48,7 @@ end
 function Level:init(gameManager, curLevel, cities, levelLength, x, y)
     x = x or screenWidth // 2
     y = y or screenHeight - 20
-    levelLength = levelLength or 3
+    levelLength = levelLength or 30
     self.level = curLevel or 1
     local numCities = 5
 

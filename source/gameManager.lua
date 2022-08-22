@@ -220,4 +220,6 @@ function GameManager:update()
     elseif self.state == gameStates.GAME_OVER then
         self.gameOver:update()
     end
+
+    playdate.drawFPS(0, 80)
 end
