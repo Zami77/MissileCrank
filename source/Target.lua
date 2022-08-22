@@ -5,10 +5,13 @@ local btnJustPressed <const> = playdate.buttonJustPressed
 
 class('Target').extends(gfx.sprite)
 
-function Target:init(targetSpeed, maxMissiles)
+function Target:init(gameManager, targetSpeed, maxMissiles)
+    assert(gameManager)
     self.targetSpeed = targetSpeed or 3
     self.maxMissiles = maxMissiles or 5
     self.curMissiles = self.maxMissiles
+    self.gameManager = gameManager
+    
     Target.super.init(self)
 
     local targetImage = gfx.image.new("images/ui/TargetReticule")
@@ -47,7 +50,7 @@ function Target:handleFire()
     if btnJustPressed(FireButton) and self.curMissiles > 0 then
         local originVector = geometry.vector2D.new(screenWidth // 2, screenHeight)
         local goalVector = geometry.vector2D.new(self.x, self.y)
-        Missile(originVector, goalVector)
+        Missile(originVector, goalVector, self.gameManager)
         self.curMissiles -= 1
     end
 end

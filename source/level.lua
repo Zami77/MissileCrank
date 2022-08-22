@@ -6,6 +6,10 @@ local levelMap = {
     "Level-01"
 }
 
+local backgroundMap = {
+    "DefaultBackground"
+}
+
 function Level:loadLevel()
     local levelImage = nil
     levelImage = gfx.image.new("images/levels/" .. levelMap[self.level])
@@ -18,6 +22,18 @@ function Level:createCities(numCities)
         self.cities[i] = City((screenWidth // numCities) * (i - 1) + 32)
         self.cities[i]:add()
     end
+end
+
+function Level:setLevelBackground()
+    local backgroundImage = nil
+    backgroundImage = gfx.image.new("images/backgrounds/" .. backgroundMap[self.level])
+    assert(backgroundImage)
+    
+    gfx.sprite.setBackgroundDrawingCallback(
+        function (x, y, width, height)
+            backgroundImage:draw(0, 0)
+        end
+    )
 end
 
 function Level:init(numCities, curLevel, x, y)
@@ -34,6 +50,8 @@ function Level:init(numCities, curLevel, x, y)
     
     self:moveTo(x, y)
     self:add()
+    
+    self:setLevelBackground()
 end
 
 
