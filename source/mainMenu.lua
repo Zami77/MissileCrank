@@ -12,6 +12,18 @@ local gridviewSprite = gfx.sprite.new()
 
 class('MainMenu').extends(gfx.sprite)
 
+function MainMenu:setBackground()
+    local backgroundImage = nil
+    backgroundImage = gfx.image.new("images/backgrounds/DefaultBackgroundWhite")
+    assert(backgroundImage)
+    
+    gfx.sprite.setBackgroundDrawingCallback(
+        function (x, y, width, height)
+            backgroundImage:draw(0, 0)
+        end
+    )
+end
+
 function MainMenu:init(gameManager)
 	--self.super.init(self)
 	self.gameManager = gameManager
@@ -26,7 +38,7 @@ function MainMenu:init(gameManager)
 	gridviewSprite:moveTo(100, 70)
 	gridviewSprite:add()
 	
-	
+	self:setBackground()
 end
 
 function gridview:drawCell(section, row, column, selected, x, y, width, height)

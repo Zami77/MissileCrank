@@ -29,3 +29,7 @@ function City:destroy()
 	self:setImage(cityDestroyedImage)
 	self.state = cityStates.DESTROYED
 end
+
+function City:isActive()
+	return self.state == cityStates.ACTIVE
+end

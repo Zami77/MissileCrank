@@ -14,7 +14,7 @@ function UIOverlay:init(gameManager, targetRef)
 	self:setZIndex(uiZindex)
 	self:moveTo(0, 0)
 	self:add()
-	
+	self.textBoxSize = 100
 	self.startLevelTimer = pd.timer.new(secondsToMs(3))
 end
 
@@ -22,11 +22,11 @@ end
 function UIOverlay:update()
 	gfx.pushContext()
 		gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-		gfx.drawTextInRect("Missiles: " .. self.targetRef.curMissiles .. "/" .. self.targetRef.maxMissiles, screenWidth - 100, 0, 100, 100)
-		gfx.drawTextInRect("Score: " .. self.gameManager:getScore(), 0, 0, 100, 100)
+		gfx.drawTextInRect("Missiles: " .. self.targetRef.curMissiles .. "/" .. self.targetRef.maxMissiles, screenWidth - 100, 0, self.textBoxSize, self.textBoxSize)
+		gfx.drawTextInRect("Score: " .. self.gameManager:getScore(), 0, 0, self.textBoxSize, self.textBoxSize)
 		
 		if self.startLevelTimer.timeLeft > 0 then
-			gfx.drawTextInRect("Level " .. self.gameManager:getLevel(), screenWidth / 2 - 20, screenHeight / 2, 100, 100)
+			gfx.drawTextInRect("Level " .. self.gameManager:getLevel(), screenWidth / 2 - 20, screenHeight / 2, self.textBoxSize, self.textBoxSize)
 		end
 	gfx.popContext()
 end

@@ -9,6 +9,6 @@ end
 
 function createEnemy(enemyType)
     if enemyType == EnemyTypes.BasicEnemy then
-        EnemyBasic()
+        return EnemyBasic()
     end
 end

@@ -5,7 +5,8 @@ local gfx <const> = playdate.graphics
 local gameStates = {
     MAIN_MENU = 0,
     SHOP_MENU = 1,
-    LEVEL = 2
+    LEVEL = 2,
+    GAME_OVER = 3
 }
 local backgroundManager = nil
 local levelManager = nil
@@ -21,35 +22,60 @@ function GameManager:init()
     self.scraps = 0
     self.curLevel = 1
     self.state = gameStates.MAIN_MENU
+    self.cities = nil
+    self.spawnRate = 1
     
     self.levelManager = nil
     self.target = nil
     self.spawner = nil
     self.ui = nil
+
     self.mainMenu = nil
+
+    self.gameOver = nil
     
     self:setupMainMenu()
 end
 
 function GameManager:setupMainMenu()
     self:deactivateLevel()
+    self:deactivateGameOver()
+    gfx.clear()
     -- TODO: deactivate shop menu
     self.state = gameStates.MAIN_MENU
     self.mainMenu = MainMenu(self)
 end
 
 function GameManager:deactivateMainMenu()
-    self.mainMenu:remove()
+    if self.mainMenu then
+        self.mainMenu:remove()
+    end
+end
+
+function GameManager:setupGameOver()
+    self:deactivateLevel()
+    self:deactivateMainMenu()
+    gfx.clear()
+    self.state = gameStates.GAME_OVER
+    self.gameOver = GameOver(self)
+end
+
+function GameManager:deactivateGameOver()
+    if self.gameOver then
+        self.gameOver:remove()
+    end
 end
 
 function GameManager:setupLevel()
     self:deactivateMainMenu()
+    self:deactivateGameOver()
+    gfx.clear()
     -- TODO: deactivate shop menu
     
     self.state = gameStates.LEVEL
-    self.levelManager = Level(self.curLevel)
+    self.levelManager = Level(self, self.curLevel, self.cities)
     self.target = Target(self)
-    self.spawner = EnemySpawner()
+    self.spawner = EnemySpawner(self.spawnRate)
     self.spawner:startSpawner()
     self.ui = UIOverlay(self, self.target)
 end
@@ -67,7 +93,6 @@ function GameManager:deactivateLevel()
     
     if self.spawner then
         self.spawner:stopSpawner()
-        self.spawner:remove()
     end
     
     if self.ui then
@@ -105,11 +130,17 @@ function GameManager:getLevel()
     return self.curLevel
 end
 
+function GameManager:setCities(cities)
+    self.cities = cities
+end
+
 function GameManager:update()
     if self.state == gameStates.MAIN_MENU then
         self.mainMenu:update()
     elseif self.state == gameStates.SHOP_MENU then
     elseif self.state == gameStates.LEVEL then
         self.ui:update()
+    elseif self.state == gameStates.GAME_OVER then
+        self.gameOver:update()
     end
 end

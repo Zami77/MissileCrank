@@ -18,3 +18,4 @@ EnemyTypes = {
 
 -- Controls
 FireButton = playdate.kButtonA
+ConfirmationButton = playdate.kButtonA

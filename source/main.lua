@@ -19,6 +19,7 @@ import "enemy"
 import "enemyBasic"
 import "uiOverlay"
 import "mainMenu"
+import "gameOver"
 
 local gfx <const> = playdate.graphics
 
