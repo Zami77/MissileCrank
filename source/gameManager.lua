@@ -32,7 +32,10 @@ function GameManager:init()
 end
 
 function GameManager:setupMainMenu()
-    self.mainMenu = MainMenu()
+    self:deactivateLevel()
+    -- TODO: deactivate shop menu
+    self.state = gameStates.MAIN_MENU
+    self.mainMenu = MainMenu(self)
 end
 
 function GameManager:deactivateMainMenu()
@@ -40,6 +43,9 @@ function GameManager:deactivateMainMenu()
 end
 
 function GameManager:setupLevel()
+    self:deactivateMainMenu()
+    -- TODO: deactivate shop menu
+    
     self.state = gameStates.LEVEL
     self.levelManager = Level(self.curLevel)
     self.target = Target(self)
@@ -50,11 +56,23 @@ end
 
 function GameManager:deactivateLevel()
     self.state = gameStates.SHOP_MENU
-    self.levelManager:remove()
-    self.target:remove()
-    self.spawner:stopSpawner()
-    self.spawner:remove()
-    self.ui:remove()
+    
+    if self.levelManager then
+        self.levelManager:remove()
+    end
+    
+    if self.target then
+        self.target:remove()
+    end
+    
+    if self.spawner then
+        self.spawner:stopSpawner()
+        self.spawner:remove()
+    end
+    
+    if self.ui then
+        self.ui:remove()
+    end
 end
 
 function GameManager:addScraps(numScraps)
@@ -81,6 +99,10 @@ end
 
 function GameManager:addScore(numScore)
     self.score += numScore
+end
+
+function GameManager:getLevel()
+    return self.curLevel
 end
 
 function GameManager:update()

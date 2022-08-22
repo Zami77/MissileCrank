@@ -1,6 +1,7 @@
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
-
+local startGame = "Start Game"
+local instructions = "Instructions"
 local menuOptions = {
 	"Start Game",
 	"Instructions"
@@ -11,8 +12,9 @@ local gridviewSprite = gfx.sprite.new()
 
 class('MainMenu').extends(gfx.sprite)
 
-function MainMenu:init()
+function MainMenu:init(gameManager)
 	--self.super.init(self)
+	self.gameManager = gameManager
 	
 	gridview:setNumberOfRows(#menuOptions)
 	gridview:setCellPadding(2, 2, 2, 2)
@@ -23,6 +25,8 @@ function MainMenu:init()
 	gridviewSprite:setCenter(0, 0)
 	gridviewSprite:moveTo(100, 70)
 	gridviewSprite:add()
+	
+	
 end
 
 function gridview:drawCell(section, row, column, selected, x, y, width, height)
@@ -39,11 +43,25 @@ function gridview:drawCell(section, row, column, selected, x, y, width, height)
 	gfx.popContext()
 end
 
+function MainMenu:HandleMenuSelect()
+	local section, row, col = gridview:getSelection()
+	local selectedOption = menuOptions[row]
+	
+	if selectedOption == startGame then
+		gridviewSprite:remove()
+		self.gameManager:setupLevel()
+	elseif selectedOption == instructions then
+		-- TODO: instruction window
+	end
+end
+
 function MainMenu:update()
 	if pd.buttonJustPressed(pd.kButtonUp) then
 		gridview:selectPreviousRow(true)
 	elseif pd.buttonJustPressed(pd.kButtonDown) then
 		gridview:selectNextRow(true)
+	elseif pd.buttonJustPressed(pd.kButtonA) then
+		self:HandleMenuSelect()
 	end
 	
 	if gridview.needsDisplay then
