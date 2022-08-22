@@ -71,9 +71,9 @@ function Enemy:handleCollisions()
 	if collisions then
 		for index, collision in ipairs(collisions) do
 			collidedObj = collision['other']
-			if collidedObj:isa(Enemy) and self:alphaCollision(collidedObj) then
-				collidedObj:explosion()
-			end
+			--if collidedObj:isa(Enemy) and self:alphaCollision(collidedObj) then
+			--	collidedObj:explosion()
+			--end
 			if collidedObj:isa(City) and self:alphaCollision(collidedObj) then
 				collidedObj:destroy()
 			end
