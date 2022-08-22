@@ -10,6 +10,7 @@ local maxTargetSpeedUpgrade = 6
 
 local targetUpgrade = 'Target Speed++'
 local missileUpgrade = 'Max Missiles++'
+local convertScrap = 'Convert Scrap'
 local exitShop = 'Exit Shop'
 
 local baseTargetPrice = 25
@@ -34,6 +35,8 @@ function ShopMenu:fillItemOptions()
 
 	itemOptions[#itemOptions + 1] = exitShop
 
+	itemOptions[#itemOptions + 1] = convertScrap
+
 	if self.gameManager:getTargetSpeed() < maxTargetSpeedUpgrade then
 		itemOptions[#itemOptions + 1] = targetUpgrade
 	end
@@ -45,6 +48,7 @@ end
 
 function ShopMenu:init(gameManager)
 	self.gameManager = gameManager
+	self.popupTimer = nil
 
 	self:fillItemOptions()
 	
@@ -110,6 +114,10 @@ function ShopMenu:HandleMenuSelect()
 		else
 			print("Not enough scraps")
 		end
+	elseif selectedOption == convertScrap then
+		local totalScraps = self.gameManager:getScraps()
+		self.gameManager:removeScraps(totalScraps)
+		self.gameManager:addScore(totalScraps)
 	end
 end
 
@@ -127,6 +135,7 @@ function ShopMenu:displayPrice()
 		gfx.setImageDrawMode(gfx.kDrawModeFillBlack)
 		gfx.drawText("Price: " .. price, screenWidth - 100, 0)
 		gfx.drawText("Scraps: " .. self.gameManager:getScraps(), 0, 0)
+		gfx.drawText("Score: " .. self.gameManager:getScore(), 0, gfx.getSystemFont():getHeight())
 	gfx.popContext()
 end
 
