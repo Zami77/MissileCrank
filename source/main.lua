@@ -4,6 +4,8 @@ import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "CoreLibs/crank"
 import "CoreLibs/animation"
+import "CoreLibs/ui"
+import "CoreLibs/nineslice"
 
 import "globals"
 import "enemySpawner"
@@ -16,6 +18,7 @@ import "helper"
 import "enemy"
 import "enemyBasic"
 import "uiOverlay"
+import "mainMenu"
 
 local gfx <const> = playdate.graphics
 

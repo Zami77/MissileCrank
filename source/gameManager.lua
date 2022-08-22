@@ -26,8 +26,17 @@ function GameManager:init()
     self.target = nil
     self.spawner = nil
     self.ui = nil
+    self.mainMenu = nil
     
-    self:setupLevel()
+    self:setupMainMenu()
+end
+
+function GameManager:setupMainMenu()
+    self.mainMenu = MainMenu()
+end
+
+function GameManager:deactivateMainMenu()
+    self.mainMenu:remove()
 end
 
 function GameManager:setupLevel()
@@ -37,6 +46,15 @@ function GameManager:setupLevel()
     self.spawner = EnemySpawner()
     self.spawner:startSpawner()
     self.ui = UIOverlay(self, self.target)
+end
+
+function GameManager:deactivateLevel()
+    self.state = gameStates.SHOP_MENU
+    self.levelManager:remove()
+    self.target:remove()
+    self.spawner:stopSpawner()
+    self.spawner:remove()
+    self.ui:remove()
 end
 
 function GameManager:addScraps(numScraps)
@@ -67,6 +85,7 @@ end
 
 function GameManager:update()
     if self.state == gameStates.MAIN_MENU then
+        self.mainMenu:update()
     elseif self.state == gameStates.SHOP_MENU then
     elseif self.state == gameStates.LEVEL then
         self.ui:update()
