@@ -16,7 +16,8 @@ local ui = nil
 
 local startSpawnRate = 5000
 local startTargetSpeed = 3
-local startMaxMissiles = 5
+local startMaxMissiles = 1
+local startMissileSpeed = 4
 
 function GameManager:init()
     GameManager.super.init(self)
@@ -29,6 +30,9 @@ function GameManager:init()
     self.spawnRate = startSpawnRate
     self.targetSpeed = startTargetSpeed
     self.maxMissiles = startMaxMissiles
+    self.missileSpeed = startMissileSpeed
+
+    self.highScore = 0
 
     self.gameOverScore = self.score
     self.gameOverScraps = self.scraps
@@ -44,8 +48,54 @@ function GameManager:init()
     self.gameOver = nil
 
     self.shopMenu = nil
+
+    self.hasSaveData = false
     
     self:setupMainMenu()
+end
+
+function GameManager:createSaveGameData()
+    return {
+        curLevel = self.curLevel,
+        maxMissiles = self.maxMissiles,
+        targetSpeed = self.targetSpeed,
+        spawnRate = self.spawnRate,
+        missileSpeed = self.missileSpeed,
+        score = self.score,
+        scraps = self.scraps,
+        highScore = self.highScore
+    }
+end
+
+function GameManager:loadSaveGameData(gameData)
+    self.curLevel = gameData.curLevel
+    self.maxMissiles = gameData.maxMissiles
+    self.targetSpeed = gameData.targetSpeed
+    self.spawnRate = gameData.spawnRate
+    self.missileSpeed = gameData.missileSpeed
+    self.score = gameData.score
+    self.scraps = gameData.scraps
+    self.highScore = gameData.highScore
+
+    self.hasSaveData = true
+
+    self.mainMenu:foundGameData()
+end
+
+function GameManager:clearData()
+    self.score = 0
+    self.scraps = 0
+    self.curLevel = 1
+    self.state = gameStates.MAIN_MENU
+    self.cities = nil
+    self.spawnRate = startSpawnRate
+    self.targetSpeed = startTargetSpeed
+    self.maxMissiles = startMaxMissiles
+    self.missileSpeed = startMissileSpeed
+end
+
+function GameManager:doesHaveSaveData()
+    return self.hasSaveData
 end
 
 function GameManager:setupMainMenu()
@@ -140,6 +190,8 @@ function GameManager:clearStats()
     self.gameOverScraps = self.scraps
     self.gameOverLevel = self.curLevel
 
+    self.highScore = math.max(self.highScore, self.score)
+
     self.score = 0
     self.scraps = 0
     self.curLevel = 1
@@ -200,6 +252,14 @@ end
 
 function GameManager:upgradeMaxMissiles(addMissiles)
     self.maxMissiles += addMissiles
+end
+
+function GameManager:getMissileSpeed()
+    return self.missileSpeed
+end
+
+function GameManager:upgradeMissileSpeed(addSpeed)
+    self.missileSpeed += addSpeed
 end
 
 function GameManager:getTargetSpeed()
