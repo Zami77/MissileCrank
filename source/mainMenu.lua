@@ -2,9 +2,11 @@ local pd <const> = playdate
 local gfx <const> = playdate.graphics
 local startGame = "Start Game"
 local instructions = "Instructions"
+local continueGame = "Continue Game"
 local menuOptions = {
-	"Start Game",
-	"Instructions"
+	startGame,
+	instructions,
+	continueGame
 }
 local gridview = pd.ui.gridview.new(0, 32)
 local gridviewSprite = gfx.sprite.new()
@@ -27,6 +29,7 @@ end
 function MainMenu:init(gameManager)
 	--self.super.init(self)
 	self.gameManager = gameManager
+	self.showInstructions = false
 	
 	gridview:setNumberOfRows(#menuOptions)
 	gridview:setCellPadding(2, 2, 2, 2)
@@ -37,8 +40,16 @@ function MainMenu:init(gameManager)
 	gridviewSprite:setCenter(0, 0)
 	gridviewSprite:moveTo(100, 70)
 	gridviewSprite:add()
+
+	
 	
 	self:setBackground()
+end
+
+function MainMenu:foundGameData()
+	if self.gameManager:doesHaveSaveData() then
+		menuOptions[#menuOptions+1] = continueGame
+	end
 end
 
 function gridview:drawCell(section, row, column, selected, x, y, width, height)
@@ -61,9 +72,13 @@ function MainMenu:HandleMenuSelect()
 	
 	if selectedOption == startGame then
 		gridviewSprite:remove()
+		self.gameManager:clearData()
 		self.gameManager:setupLevel()
 	elseif selectedOption == instructions then
-		-- TODO: instruction window
+		self.showInstructions = true
+	elseif selectedOption == continueGame then
+		gridviewSprite:remove()
+		self.gameManager:setupShopMenu()
 	end
 end
 
@@ -74,6 +89,8 @@ function MainMenu:update()
 		gridview:selectNextRow(true)
 	elseif pd.buttonJustPressed(pd.kButtonA) then
 		self:HandleMenuSelect()
+	elseif pd.buttonJustPressed(pd.kButtonB) then
+		self.showInstructions = false
 	end
 	
 	if gridview.needsDisplay then
@@ -82,5 +99,16 @@ function MainMenu:update()
 			gridview:drawInRect(0, 0, 200, 100)
 		gfx.popContext()
 		gridviewSprite:setImage(gridviewImage)
+	end
+
+	if self.showInstructions then
+		local instructionText = 'Take charge and defend your home planet\'s cities!\n\nUse the crank to reload missiles.\n\nDestroying enemy ships will give you scraps. You can use scraps to get upgrades or convert to points.\n\nRounds will get progressively more challenging and Game Over will not occur until all of your cities have been destroyed.\n\nGood Luck!.'
+		gfx.pushContext()
+			gfx.setImageDrawMode(gfx.kDrawModeFillBlack)
+			gfx.drawRect(0, 0, screenWidth, screenHeight)
+			gfx.fillRect(0, 0, screenWidth, screenHeight)
+			gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
+			gfx.drawTextInRect(instructionText, 0, 0, screenWidth, screenHeight, nil, nil, kTextAlignment.center)
+		gfx.popContext()
 	end
 end

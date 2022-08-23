@@ -26,14 +26,36 @@ local gfx <const> = playdate.graphics
 
 local gameManager = nil
 
+function saveGameData()
+    playdate.datastore.write(gameManager:createSaveGameData())
+end
+
+function loadGameData()
+    local gameData = playdate.datastore.read()
+    if gameData then
+        gameManager:loadSaveGameData(gameData)
+    end
+end
+
+function playdate.gameWillTerminate()
+    saveGameData()
+end
+
+function playdate.deviceWillSleep()
+    saveGameData()
+end
+
 function init()
     math.randomseed(playdate.getSecondsSinceEpoch())
     gameManager = GameManager()
+    loadGameData()
+
     -- Adjust this value for screen shutter
     playdate.setGCScaling(0, 0)
 end
 
 init()
+
 
 -- Main Game Loop
 function playdate.update()

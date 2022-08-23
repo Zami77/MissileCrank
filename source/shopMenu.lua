@@ -7,14 +7,17 @@ local gridviewSprite = gfx.sprite.new()
 
 local maxMissileUpgrade = 12
 local maxTargetSpeedUpgrade = 6
+local maxMissileSpeedUpgrade = 8
 
 local targetUpgrade = 'Target Speed++'
 local missileUpgrade = 'Max Missiles++'
+local missileSpeedUpgrade = 'Missile Speed++'
 local convertScrap = 'Convert Scrap'
 local exitShop = 'Exit Shop'
 
-local baseTargetPrice = 20
-local baseMissilePrice = 10
+local baseTargetPrice = 10
+local baseMissilePrice = 5
+local baseMissileSpeedPrice = 5
 
 class('ShopMenu').extends(gfx.sprite)
 
@@ -33,16 +36,20 @@ end
 function ShopMenu:fillItemOptions()
 	itemOptions = {}
 
-	itemOptions[#itemOptions + 1] = exitShop
+	itemOptions[#itemOptions+1] = exitShop
 
-	itemOptions[#itemOptions + 1] = convertScrap
+	itemOptions[#itemOptions+1] = convertScrap
 
 	if self.gameManager:getTargetSpeed() < maxTargetSpeedUpgrade then
-		itemOptions[#itemOptions + 1] = targetUpgrade
+		itemOptions[#itemOptions+1] = targetUpgrade
 	end
 
 	if self.gameManager:getMaxMissiles() < maxMissileUpgrade then
-		itemOptions[#itemOptions + 1] = missileUpgrade
+		itemOptions[#itemOptions+1] = missileUpgrade
+	end
+
+	if self.gameManager:getMissileSpeed() < maxMissileSpeedUpgrade then
+		itemOptions[#itemOptions+1] = missileSpeedUpgrade
 	end
 end
 
@@ -93,6 +100,10 @@ function ShopMenu:getMissileUpgradePrice()
 	return (self.gameManager:getMaxMissiles() + 1) * baseMissilePrice
 end
 
+function ShopMenu:getMissileSpeedUpgradePrice()
+	return (self.gameManager:getMissileSpeed() + 1) * baseMissileSpeedPrice
+end
+
 function ShopMenu:getSelectedOption()
 	local section, row, col = gridview:getSelection()
 	return itemOptions[row]
@@ -124,6 +135,16 @@ function ShopMenu:HandleMenuSelect()
 			self.popupText = 'Not enough scraps'
 		end
 		self:startPopupTimer()
+	elseif selectedOption == missileSpeedUpgrade then
+		local missileSpeedPrice = self:getMissileSpeedUpgradePrice()
+		if self.gameManager:getScraps() >= missileSpeedPrice then
+			self.gameManager:removeScraps(missileSpeedPrice)
+			self.gameManager:upgradeMissileSpeed(1)
+			self.popupText = "Upgraded Missile Speed!"
+		else
+			self.popupText = 'Not enough scraps'
+		end
+		self:startPopupTimer()
 	elseif selectedOption == convertScrap then
 		local totalScraps = self.gameManager:getScraps()
 		self.gameManager:removeScraps(totalScraps)
@@ -141,13 +162,16 @@ function ShopMenu:displayPrice()
 		price = self:getTargetUpgradePrice()
 	elseif selectedOption == missileUpgrade then
 		price = self:getMissileUpgradePrice()
+	elseif selectedOption == missileSpeedUpgrade then
+		price = self:getMissileSpeedUpgradePrice()
 	end
 
 	gfx.pushContext()
 		gfx.setImageDrawMode(gfx.kDrawModeFillBlack)
-		gfx.drawText("Price: " .. price, screenWidth - 100, 0)
+		gfx.drawText("Price: " .. price, screenWidth - 75, 0)
 		gfx.drawText("Scraps: " .. self.gameManager:getScraps(), 0, 0)
-		gfx.drawText("Score: " .. self.gameManager:getScore(), 0, gfx.getSystemFont():getHeight())
+		gfx.drawText("Score: " .. self.gameManager:getScore(), 0, screenHeight - gfx.getSystemFont():getHeight())
+		gfx.drawText("Level: " .. self.gameManager:getLevel(), screenWidth - 75, screenHeight - gfx.getSystemFont():getHeight())
 	gfx.popContext()
 end
 

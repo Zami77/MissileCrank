@@ -7,11 +7,11 @@ local missileState = {
 
 class('Missile').extends(gfx.sprite)
 
-function Missile:init(originVector, goalVector, gameManager, speed)
+function Missile:init(originVector, goalVector, gameManager)
     assert(gameManager)
     Missile.super.init(self)
     
-    speed = speed or 5
+    local speed = gameManager:getMissileSpeed() or 4
 
     -- Create missile
     local missileSize = 4
