@@ -102,7 +102,7 @@ function MainMenu:update()
 	end
 
 	if self.showInstructions then
-		local instructionText = 'Take charge and defend your home planet\'s cities!\n\nUse the crank to reload missiles.\n\nDestroying enemy ships will give you scraps. You can use scraps to get upgrades or convert to points.\n\nRounds will get progressively more challenging and Game Over will not occur until all of your cities have been destroyed.\n\nGood Luck!.'
+		local instructionText = 'Take charge and defend your home planet\'s cities!\n\nUse the crank to reload missiles.\n\nDestroying enemy ships will give you scraps. You can use scraps to get upgrades or convert to points.\n\nRounds will get progressively more challenging and Game Over will not occur until all of your cities have been destroyed.\n\nGood Luck!'
 		gfx.pushContext()
 			gfx.setImageDrawMode(gfx.kDrawModeFillBlack)
 			gfx.drawRect(0, 0, screenWidth, screenHeight)
