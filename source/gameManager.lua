@@ -38,6 +38,8 @@ function GameManager:init()
     self.gameOverScraps = self.scraps
     self.gameOverLevel = self.curLevel
     
+    self.audioManager = AudioManager()
+    
     self.levelManager = nil
     self.target = nil
     self.spawner = nil

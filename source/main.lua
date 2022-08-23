@@ -21,6 +21,7 @@ import "uiOverlay"
 import "mainMenu"
 import "gameOver"
 import "shopMenu"
+import "audioManager"
 
 local gfx <const> = playdate.graphics
 

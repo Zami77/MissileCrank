@@ -47,6 +47,8 @@ function Missile:init(originVector, goalVector, gameManager)
     assert(self.explosionSheet)
     
     self:add()
+    
+    self.gameManager.audioManager:playMissileLaunch()
 end
 
 function Missile:explosion()
