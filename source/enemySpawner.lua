@@ -4,9 +4,7 @@ local spawnStates = {
 	STOPPED = 1
 }
 
-local enemyTypes = {
-	ENEMY_BASIC
-}
+
 
 class('EnemySpawner').extends()
 
@@ -21,8 +19,10 @@ function EnemySpawner:init(spawnRate, enemyType)
 end
 
 local function createEnemy(enemyType)
-	if enemyType == enemyTypes.BasicEnemy then
+	if enemyType == enemyTypes.ENEMY_BASIC then
 		return EnemyBasic()
+	elseif enemyType == enemyTypes.ENEMY_FAST then
+		return EnemyFast()
 	end
 end
 
@@ -31,7 +31,7 @@ function EnemySpawner:createSpawnTimer()
 		return
 	end
 	
-	local randSpawnRate = math.random(self.spawnRate, self.spawnRate + 1000)
+	local randSpawnRate = math.random(self.spawnRate - 1000, self.spawnRate)
 	
 	playdate.timer.performAfterDelay(randSpawnRate, function()
 		self.enemies[#self.enemies + 1] = createEnemy(self.enemyType)

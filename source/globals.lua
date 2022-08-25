@@ -16,4 +16,9 @@ CityGroup = 3
 FireButton = playdate.kButtonA
 ConfirmationButton = playdate.kButtonA
 
+enemyTypes = {
+	ENEMY_BASIC = 0,
+    ENEMY_FAST = 1
+}
+
 audioManager = AudioManager()

@@ -71,6 +71,10 @@ function Level:init(gameManager, curLevel, cities, levelLength, x, y)
     self:setLevelBackground()
 
     self.levelTimer = pd.timer.new(secondsToMs(levelLength))
+
+    local endLevelBufferLength = 3
+    self.endLevelBufferTimer = pd.timer.new(secondsToMs(endLevelBufferLength))
+    self.endLevelBufferTimer:pause()
     self.spawnersStopped = false
 end
 
@@ -108,6 +112,10 @@ function Level:update()
         self:levelFailure()
     end
 
+    if self.endLevelBufferTimer.timeLeft == 0 then
+        self:levelSuccess()
+    end
+
     if self.levelTimer.timeLeft <= 3000 then
         gfx.pushContext()
             gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
@@ -122,7 +130,7 @@ function Level:update()
 
     if self.levelTimer.timeLeft == 0 then
         if not self.gameManager:areThereEnemies() then
-            self:levelSuccess()
+            self.endLevelBufferTimer:start()
         end
     end
 end

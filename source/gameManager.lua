@@ -19,6 +19,8 @@ local startTargetSpeed = 3
 local startMaxMissiles = 1
 local startMissileSpeed = 4
 
+local startEnemyFastLevel = 5
+
 function GameManager:init()
     GameManager.super.init(self)
     
@@ -41,6 +43,7 @@ function GameManager:init()
     self.levelManager = nil
     self.target = nil
     self.spawner = nil
+    self.spawnerFast = nil
     self.ui = nil
 
     self.mainMenu = nil
@@ -174,6 +177,12 @@ function GameManager:setupLevel()
     self.target = Target(self, self.targetSpeed, self.maxMissiles)
     self.spawner = EnemySpawner(self.spawnRate)
     self.spawner:startSpawner()
+
+    if self.curLevel >= startEnemyFastLevel then
+        self.spawnerFast = EnemySpawner(self.spawnRate * 2, enemyTypes.ENEMY_FAST)
+        self.spawnerFast:startSpawner()
+    end
+
     self.ui = UIOverlay(self, self.target)
 end
 
@@ -193,7 +202,14 @@ function GameManager:deactivateLevel()
     
     if self.spawner then
         self.spawner:stopSpawner()
+        self.spawner:removeEnemies()
         self.spawner = nil
+    end
+
+    if self.spawnerFast then
+        self.spawnerFast:stopSpawner()
+        self.spawnerFast:removeEnemies()
+        self.spawnerFast = nil
     end
     
     if self.ui then
@@ -206,10 +222,18 @@ function GameManager:stopAllSpawners()
     if self.spawner then
         self.spawner:stopSpawner()
     end
+
+    if self.spawnerFast then
+        self.spawnerFast:stopSpawner()
+    end
 end
 
 function GameManager:areThereEnemies()
     if self.spawner and self.spawner:areThereEnemies() then
+        return true
+    end
+
+    if self.spawnerFast and self.spawnerFast:areThereEnemies() then
         return true
     end
     
