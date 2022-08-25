@@ -71,6 +71,7 @@ function Level:init(gameManager, curLevel, cities, levelLength, x, y)
     self:setLevelBackground()
 
     self.levelTimer = pd.timer.new(secondsToMs(levelLength))
+    self.spawnersStopped = false
 end
 
 function Level:areCitiesAlive()
@@ -112,10 +113,17 @@ function Level:update()
             gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
             gfx.drawTextInRect("Level Ending!", screenWidth // 2 - 100, screenHeight // 2, 200, gfx.getSystemFont():getHeight(), nil, nil, kTextAlignment.center)
         gfx.popContext()
+
+        if not self.spawnersStopped then
+            self.gameManager:stopAllSpawners()
+            self.spawnersStopped = true
+        end
     end
 
     if self.levelTimer.timeLeft == 0 then
-        self:levelSuccess()
+        if not self.gameManager:areThereEnemies() then
+            self:levelSuccess()
+        end
     end
 end
 

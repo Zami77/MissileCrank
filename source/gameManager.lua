@@ -81,8 +81,10 @@ function GameManager:loadSaveGameData(gameData)
     
     self.curLevel = gameData.curLevel
     
-    self.cities = gameData.cities
-    self:loadGameDataCities()
+    if gameData.cities then
+        self.cities = gameData.cities
+        self:loadGameDataCities()
+    end
     
     self.maxMissiles = gameData.maxMissiles
     self.targetSpeed = gameData.targetSpeed
@@ -200,6 +202,20 @@ function GameManager:deactivateLevel()
     end
 end
 
+function GameManager:stopAllSpawners()
+    if self.spawner then
+        self.spawner:stopSpawner()
+    end
+end
+
+function GameManager:areThereEnemies()
+    if self.spawner and self.spawner:areThereEnemies() then
+        return true
+    end
+    
+    return false
+end
+
 function GameManager:clearStats()
     self.gameOverScore = self.score
     self.gameOverScraps = self.scraps
@@ -214,6 +230,7 @@ function GameManager:clearStats()
     self.spawnRate = startSpawnRate
     self.targetSpeed = startTargetSpeed
     self.maxMissiles = startMaxMissiles
+    self.missileSpeed = startMissileSpeed
 end
 
 function GameManager:levelSuccess()

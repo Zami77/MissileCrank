@@ -5,15 +5,36 @@ local enemyStates = {
 	EXPLODING = 1
 }
 
-local function getStartAndGoalVectors()
+local function getStartAndGoalVectors(goalPos)
 	local startVec = geometry.vector2D.new(math.random(screenWidth), 0)
-	local goalVec = geometry.vector2D.new(math.random(screenWidth), screenHeight - 15)
+	local goalBuffer = 40
+	local goalVec = nil
+	if goalPos then
+		goalVec = geometry.vector2D.new(math.random(goalPos.x - goalBuffer, goalPos.x + goalBuffer), screenHeight - 15)
+	else
+		goalVec = geometry.vector2D.new(math.random(screenWidth), screenHeight - 15)
+	end
 	return startVec, goalVec
+end
+
+local function getCityPos(cities)
+	if not cities then
+		return nil
+	end
+	activeCities = {}
+
+	for i=1, #cities, 1 do
+		if cities[i]:isActive() then
+			activeCities[#activeCities+1] = geometry.vector2D.new(cities[i].x, cities[i].y)
+		end
+	end
+
+	return activeCities[math.random(#activeCities)]
 end
 
 class('Enemy').extends(gfx.sprite)
 
-function Enemy:init(enemyImage, pointsVal, scrapsVal)
+function Enemy:init(enemyImage, pointsVal, scrapsVal, speed, cities)
 	pointsVal = pointsVal or 10
 	scrapsVal = scrapsVal or 1
 	assert(enemyImage)
@@ -25,18 +46,21 @@ function Enemy:init(enemyImage, pointsVal, scrapsVal)
 	self:setCollidesWithGroups({CityGroup, MissileGroup})
 	self:setZIndex(enemyZIndex)
 	
-	local startVec, goalVec = getStartAndGoalVectors()
+	self.cities = cities
+	
+	local startVec, goalVec = getStartAndGoalVectors(getCityPos(cities))
 	self:moveTo(startVec.dx, startVec.dy)
 	
 	local enemyDir = goalVec - startVec
 	enemyDir:normalize()
-	
-	self.speed = 1
+
+	self.speed = speed or 1
 	self.goal = goalVec
 	self.state = enemyStates.MOVING
 	self.enemyDir = enemyDir
 	self.pointsVal = pointsVal
 	self.scrapsVal = scrapsVal
+
 	self:add()
 end
 

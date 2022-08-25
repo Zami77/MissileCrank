@@ -53,7 +53,8 @@ function init()
     loadGameData()
 
     -- Adjust this value for screen shutter
-    playdate.setGCScaling(0, 0)
+    --playdate.setGCScaling(0, 0.5)
+    playdate.setMinimumGCTime(3000)
 end
 
 init()

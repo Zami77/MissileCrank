@@ -15,5 +15,3 @@ CityGroup = 3
 -- Controls
 FireButton = playdate.kButtonA
 ConfirmationButton = playdate.kButtonA
-
-audioManager = AudioManager()

@@ -8,5 +8,6 @@ function EnemyBasic:init()
 	assert(enemyImage)
 	local points = 10
 	local scraps = 1
-	EnemyBasic.super.init(self, enemyImage, points, scraps)
+	local speed = 2
+	EnemyBasic.super.init(self, enemyImage, points, scraps, speed)
 end

@@ -31,12 +31,13 @@ function EnemySpawner:createSpawnTimer()
 		return
 	end
 	
-	self.enemies[#self.enemies + 1] = createEnemy(self.enemyType)
-	local randSpawnRate = math.random(self.spawnRate - 1000, self.spawnRate)
+	local randSpawnRate = math.random(self.spawnRate, self.spawnRate + 1000)
 	
 	playdate.timer.performAfterDelay(randSpawnRate, function()
+		self.enemies[#self.enemies + 1] = createEnemy(self.enemyType)
 		self:createSpawnTimer()
 	end)
+	
 end
 
 function EnemySpawner:startSpawner()
@@ -46,14 +47,20 @@ end
 
 function EnemySpawner:stopSpawner()
 	self.state = spawnStates.STOPPED
+end
+
+function EnemySpawner:areThereEnemies()
+	for i=1, #self.enemies, 1 do
+		if self.enemies[i] and self.enemies[i]:isAlive() then
+			return true
+		end
+	end
+
+	return false
+end
+
+function EnemySpawner:removeEnemies()
 	for i=1, #self.enemies, 1 do
 		self.enemies[i]:remove()
 	end
-end
-
-function EnemySpawner:updateSpawnRate(newRate)
-	self.spawnRate = newRate
-end
-
-function EnemySpawner:update()
 end
