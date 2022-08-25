@@ -37,9 +37,7 @@ function GameManager:init()
     self.gameOverScore = self.score
     self.gameOverScraps = self.scraps
     self.gameOverLevel = self.curLevel
-    
-    self.audioManager = AudioManager()
-    
+        
     self.levelManager = nil
     self.target = nil
     self.spawner = nil
@@ -283,6 +281,7 @@ function GameManager:update()
         self.shopMenu:update()
     elseif self.state == gameStates.LEVEL then
         self.ui:update()
+        self.levelManager:update()
     elseif self.state == gameStates.GAME_OVER then
         self.gameOver:update()
     end

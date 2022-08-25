@@ -83,16 +83,6 @@ function MainMenu:HandleMenuSelect()
 end
 
 function MainMenu:update()
-	if pd.buttonJustPressed(pd.kButtonUp) then
-		gridview:selectPreviousRow(true)
-	elseif pd.buttonJustPressed(pd.kButtonDown) then
-		gridview:selectNextRow(true)
-	elseif pd.buttonJustPressed(pd.kButtonA) then
-		self:HandleMenuSelect()
-	elseif pd.buttonJustPressed(pd.kButtonB) then
-		self.showInstructions = false
-	end
-	
 	if gridview.needsDisplay then
 		local gridviewImage = gfx.image.new(200, 100)
 		gfx.pushContext(gridviewImage)
@@ -110,5 +100,22 @@ function MainMenu:update()
 			gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
 			gfx.drawTextInRect(instructionText, 0, 0, screenWidth, screenHeight, nil, nil, kTextAlignment.center)
 		gfx.popContext()
+
+		if pd.buttonJustPressed(pd.kButtonB) then
+			self.showInstructions = false
+		elseif pd.buttonJustPressed(pd.kButtonA) then
+			self.showInstructions = false
+		end
+	else
+		if pd.buttonJustPressed(pd.kButtonUp) then
+			audioManager:playMenuUp()
+			gridview:selectPreviousRow(true)
+		elseif pd.buttonJustPressed(pd.kButtonDown) then
+			audioManager:playMenuDown()
+			gridview:selectNextRow(true)
+		elseif pd.buttonJustPressed(pd.kButtonA) then
+			audioManager:playConfirmation()
+			self:HandleMenuSelect()
+		end
 	end
 end

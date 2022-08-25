@@ -62,6 +62,7 @@ function Enemy:explosion()
 	self.explosionAnimation = gfx.animation.loop.new(100, self.explosionSheet, false)
 	self:setImage(self.explosionSheet:getImage(self.explosionAnimation.frame))
 	self:setCollideRect(0, 0, self:getSize())
+	audioManager:playEnemyExplosion()
 	self.state = enemyStates.EXPLODING
 end
 

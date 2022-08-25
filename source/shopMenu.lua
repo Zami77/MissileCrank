@@ -111,16 +111,18 @@ end
 
 function ShopMenu:HandleMenuSelect()
 	local selectedOption = self:getSelectedOption()
-	
+	local success = false
 	if selectedOption == exitShop then
 		gridviewSprite:remove()
 		self.gameManager:setupLevel()
+		success = true
 	elseif selectedOption == targetUpgrade then
 		local tgtPrice = self:getTargetUpgradePrice()
 		if self.gameManager:getScraps() >= tgtPrice then
 			self.gameManager:removeScraps(tgtPrice)
 			self.gameManager:upgradeTargetSpeed(1)
 			self.popupText = "Upgraded Target Speed!"
+			success = true
 		else
 			self.popupText = 'Not enough scraps'
 		end
@@ -131,6 +133,7 @@ function ShopMenu:HandleMenuSelect()
 			self.gameManager:removeScraps(missilePrice)
 			self.gameManager:upgradeMaxMissiles(1)
 			self.popupText = "Upgraded Max Missiles!"
+			success = true
 		else
 			self.popupText = 'Not enough scraps'
 		end
@@ -141,8 +144,10 @@ function ShopMenu:HandleMenuSelect()
 			self.gameManager:removeScraps(missileSpeedPrice)
 			self.gameManager:upgradeMissileSpeed(1)
 			self.popupText = "Upgraded Missile Speed!"
+			success = true
 		else
 			self.popupText = 'Not enough scraps'
+			audioManager:playError()
 		end
 		self:startPopupTimer()
 	elseif selectedOption == convertScrap then
@@ -150,7 +155,14 @@ function ShopMenu:HandleMenuSelect()
 		self.gameManager:removeScraps(totalScraps)
 		self.gameManager:addScore(totalScraps)
 		self.popupText = "Converted " .. totalScraps .. " Scrap!"
+		success = true
 		self:startPopupTimer()
+	end
+
+	if success then
+		audioManager:playConfirmation()
+	else
+		audioManager:playError()
 	end
 end
 
@@ -205,8 +217,10 @@ function ShopMenu:update()
 	end
 
 	if pd.buttonJustPressed(pd.kButtonUp) then
+		audioManager:playMenuUp()
 		gridview:selectPreviousRow(true)
 	elseif pd.buttonJustPressed(pd.kButtonDown) then
+		audioManager:playMenuDown()
 		gridview:selectNextRow(true)
 	elseif pd.buttonJustPressed(pd.kButtonA) then
 		self:HandleMenuSelect()

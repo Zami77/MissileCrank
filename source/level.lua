@@ -107,6 +107,13 @@ function Level:update()
         self:levelFailure()
     end
 
+    if self.levelTimer.timeLeft <= 3000 then
+        gfx.pushContext()
+            gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
+            gfx.drawTextInRect("Level Ending!", screenWidth // 2 - 100, screenHeight // 2, 200, gfx.getSystemFont():getHeight(), nil, nil, kTextAlignment.center)
+        gfx.popContext()
+    end
+
     if self.levelTimer.timeLeft == 0 then
         self:levelSuccess()
     end
