@@ -22,11 +22,11 @@ end
 function UIOverlay:update()
 	gfx.pushContext()
 		gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-		gfx.drawTextInRect("Missiles: " .. self.targetRef.curMissiles .. "/" .. self.targetRef.maxMissiles, screenWidth - 100, 0, self.textBoxSize, self.textBoxSize)
+		gfx.drawTextInRect("Missiles: " .. self.targetRef.curMissiles .. "/" .. self.targetRef.maxMissiles, 400 - 100, 0, self.textBoxSize, self.textBoxSize)
 		gfx.drawTextInRect("Score: " .. self.gameManager:getScore(), 0, 0, self.textBoxSize, self.textBoxSize)
 		
 		if self.startLevelTimer.timeLeft > 0 then
-			gfx.drawTextInRect("Level " .. self.gameManager:getLevel(), screenWidth / 2 - 20, screenHeight / 2, self.textBoxSize, self.textBoxSize)
+			gfx.drawTextInRect("Level " .. self.gameManager:getLevel(), 400 / 2 - 20, 240 / 2, self.textBoxSize, self.textBoxSize)
 		end
 	gfx.popContext()
 end

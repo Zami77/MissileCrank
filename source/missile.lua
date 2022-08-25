@@ -48,14 +48,14 @@ function Missile:init(originVector, goalVector, gameManager)
     
     self:add()
     
-    audioManager:playMissileLaunch()
+    self.gameManager.audioManager:playMissileLaunch()
 end
 
 function Missile:explosion()
     self.explosionAnimation = gfx.animation.loop.new(100, self.explosionSheet, false)
     self:setImage(self.explosionSheet:getImage(self.explosionAnimation.frame))
     self:setCollideRect(0, 0, self:getSize())
-    audioManager:playExplosion()
+    self.gameManager.audioManager:playExplosion()
     self.state = missileState.EXPLODING
 end
 

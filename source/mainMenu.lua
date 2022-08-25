@@ -95,10 +95,10 @@ function MainMenu:update()
 		local instructionText = 'Take charge and defend your home planet\'s cities!\n\nUse the crank to reload missiles.\n\nDestroying enemy ships will give you scraps. You can use scraps to get upgrades or convert to points.\n\nRounds will get progressively more challenging and Game Over will not occur until all of your cities have been destroyed.\n\nGood Luck!'
 		gfx.pushContext()
 			gfx.setImageDrawMode(gfx.kDrawModeFillBlack)
-			gfx.drawRect(0, 0, screenWidth, screenHeight)
-			gfx.fillRect(0, 0, screenWidth, screenHeight)
+			gfx.drawRect(0, 0, 400, 240)
+			gfx.fillRect(0, 0, 400, 240)
 			gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-			gfx.drawTextInRect(instructionText, 0, 0, screenWidth, screenHeight, nil, nil, kTextAlignment.center)
+			gfx.drawTextInRect(instructionText, 0, 0, 400, 240, nil, nil, kTextAlignment.center)
 		gfx.popContext()
 
 		if pd.buttonJustPressed(pd.kButtonB) then
@@ -108,13 +108,13 @@ function MainMenu:update()
 		end
 	else
 		if pd.buttonJustPressed(pd.kButtonUp) then
-			audioManager:playMenuUp()
+			self.gameManager.audioManager:playMenuUp()
 			gridview:selectPreviousRow(true)
 		elseif pd.buttonJustPressed(pd.kButtonDown) then
-			audioManager:playMenuDown()
+			self.gameManager.audioManager:playMenuDown()
 			gridview:selectNextRow(true)
 		elseif pd.buttonJustPressed(pd.kButtonA) then
-			audioManager:playConfirmation()
+			self.gameManager.audioManager:playConfirmation()
 			self:HandleMenuSelect()
 		end
 	end

@@ -6,13 +6,13 @@ local enemyStates = {
 }
 
 local function getStartAndGoalVectors(goalPos)
-	local startVec = geometry.vector2D.new(math.random(screenWidth), 0)
+	local startVec = geometry.vector2D.new(math.random(400), 0)
 	local goalBuffer = 40
 	local goalVec = nil
 	if goalPos then
-		goalVec = geometry.vector2D.new(math.random(goalPos.x - goalBuffer, goalPos.x + goalBuffer), screenHeight - 15)
+		goalVec = geometry.vector2D.new(math.random(goalPos.x - goalBuffer, goalPos.x + goalBuffer), 240 - 15)
 	else
-		goalVec = geometry.vector2D.new(math.random(screenWidth), screenHeight - 15)
+		goalVec = geometry.vector2D.new(math.random(400), 240 - 15)
 	end
 	return startVec, goalVec
 end
@@ -34,7 +34,7 @@ end
 
 class('Enemy').extends(gfx.sprite)
 
-function Enemy:init(enemyImage, pointsVal, scrapsVal, speed, cities)
+function Enemy:init(enemyImage, pointsVal, scrapsVal, speed, cities, audioManager)
 	pointsVal = pointsVal or 10
 	scrapsVal = scrapsVal or 1
 	assert(enemyImage)
@@ -60,6 +60,7 @@ function Enemy:init(enemyImage, pointsVal, scrapsVal, speed, cities)
 	self.enemyDir = enemyDir
 	self.pointsVal = pointsVal
 	self.scrapsVal = scrapsVal
+	self.audioManager = audioManager or AudioManager()
 
 	self:add()
 end
@@ -86,7 +87,7 @@ function Enemy:explosion()
 	self.explosionAnimation = gfx.animation.loop.new(100, self.explosionSheet, false)
 	self:setImage(self.explosionSheet:getImage(self.explosionAnimation.frame))
 	self:setCollideRect(0, 0, self:getSize())
-	audioManager:playEnemyExplosion()
+	self.audioManager:playEnemyExplosion()
 	self.state = enemyStates.EXPLODING
 end
 
@@ -100,6 +101,7 @@ function Enemy:handleCollisions()
 			--	collidedObj:explosion()
 			--end
 			if collidedObj:isa(City) and collidedObj:isActive() and self:alphaCollision(collidedObj) then
+				self.audioManager:playCityExplosion()
 				collidedObj:destroy()
 			end
 		end
@@ -110,9 +112,7 @@ function Enemy:update()
 	if self.state == enemyStates.MOVING then
 		self:moveBy(self.enemyDir.dx * self.speed, self.enemyDir.dy * self.speed)
 		
-		local posVector = geometry.vector2D.new(self.x, self.y)
-		
-		if inVicinityOf(posVector, self.goal) then
+		if self.y >= self.goal.dy then
 			self:explosion()
 		end
 	elseif self.state == enemyStates.EXPLODING then

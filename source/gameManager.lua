@@ -42,6 +42,7 @@ function GameManager:init()
     self.target = nil
     self.spawner = nil
     self.ui = nil
+    self.audioManager = AudioManager()
 
     self.mainMenu = nil
 

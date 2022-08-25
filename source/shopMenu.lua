@@ -159,9 +159,9 @@ function ShopMenu:HandleMenuSelect()
 	end
 
 	if success then
-		audioManager:playConfirmation()
+		self.gameManager.audioManager:playConfirmation()
 	else
-		audioManager:playError()
+		self.gameManager.audioManager:playError()
 	end
 end
 
@@ -179,10 +179,10 @@ function ShopMenu:displayPrice()
 
 	gfx.pushContext()
 		gfx.setImageDrawMode(gfx.kDrawModeFillBlack)
-		gfx.drawText("Price: " .. price, screenWidth - 75, 0)
+		gfx.drawText("Price: " .. price, 400 - 75, 0)
 		gfx.drawText("Scraps: " .. self.gameManager:getScraps(), 0, 0)
-		gfx.drawText("Score: " .. self.gameManager:getScore(), 0, screenHeight - gfx.getSystemFont():getHeight())
-		gfx.drawText("Level: " .. self.gameManager:getLevel(), screenWidth - 75, screenHeight - gfx.getSystemFont():getHeight())
+		gfx.drawText("Score: " .. self.gameManager:getScore(), 0, 240 - gfx.getSystemFont():getHeight())
+		gfx.drawText("Level: " .. self.gameManager:getLevel(), 400 - 75, 240 - gfx.getSystemFont():getHeight())
 	gfx.popContext()
 end
 
@@ -191,7 +191,7 @@ function ShopMenu:displayPopup()
 	local popupHeight = gfx.getSystemFont():getHeight()
 	gfx.pushContext()
 		gfx.setImageDrawMode(gfx.kDrawModeFillBlack)
-		gfx.drawTextInRect(self.popupText, screenWidth // 2 - popupWidth // 2, screenHeight // 4 - popupHeight, popupWidth, popupHeight, nil, nil, kTextAlignment.center)
+		gfx.drawTextInRect(self.popupText, 400 // 2 - popupWidth // 2, 240 // 4 - popupHeight, popupWidth, popupHeight, nil, nil, kTextAlignment.center)
 	gfx.popContext()
 end
 
@@ -216,10 +216,10 @@ function ShopMenu:update()
 	end
 
 	if pd.buttonJustPressed(pd.kButtonUp) then
-		audioManager:playMenuUp()
+		self.gameManager.audioManager:playMenuUp()
 		gridview:selectPreviousRow(true)
 	elseif pd.buttonJustPressed(pd.kButtonDown) then
-		audioManager:playMenuDown()
+		self.gameManager.audioManager:playMenuDown()
 		gridview:selectNextRow(true)
 	elseif pd.buttonJustPressed(pd.kButtonA) then
 		self:HandleMenuSelect()

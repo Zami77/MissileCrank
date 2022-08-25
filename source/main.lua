@@ -54,7 +54,7 @@ function init()
 
     -- Adjust this value for screen shutter
     --playdate.setGCScaling(0, 0.5)
-    playdate.setMinimumGCTime(3000)
+    playdate.setMinimumGCTime(5)
 end
 
 init()

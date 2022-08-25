@@ -22,7 +22,7 @@ function Level:createCities(numCities)
     self.cities = {}
 
     for i=1, numCities, 1 do
-        self.cities[i] = City((screenWidth // numCities) * (i - 1) + 32)
+        self.cities[i] = City((400 // numCities) * (i - 1) + 32)
         self.cities[i]:add()
     end
 end
@@ -46,8 +46,8 @@ function Level:setLevelBackground()
 end
 
 function Level:init(gameManager, curLevel, cities, levelLength, x, y)
-    x = x or screenWidth // 2
-    y = y or screenHeight - 20
+    x = x or 400 // 2
+    y = y or 240 - 20
     levelLength = levelLength or 30
     self.level = curLevel or 1
     local numCities = 5
@@ -111,7 +111,7 @@ function Level:update()
     if self.levelTimer.timeLeft <= 3000 then
         gfx.pushContext()
             gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-            gfx.drawTextInRect("Level Ending!", screenWidth // 2 - 100, screenHeight // 2, 200, gfx.getSystemFont():getHeight(), nil, nil, kTextAlignment.center)
+            gfx.drawTextInRect("Level Ending!", 400 // 2 - 100, 240 // 2, 200, gfx.getSystemFont():getHeight(), nil, nil, kTextAlignment.center)
         gfx.popContext()
 
         if not self.spawnersStopped then

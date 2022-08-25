@@ -19,7 +19,7 @@ function Target:init(gameManager, targetSpeed, maxMissiles)
     assert(targetImage)
 
     self:setImage(targetImage)
-    self:moveTo(screenWidth // 2, screenHeight // 2)
+    self:moveTo(400 // 2, 240 // 2)
     self:setZIndex(targetZIndex)
     self:add()
 end
@@ -27,7 +27,10 @@ end
 function Target:removeMissiles()
     for i=1, #self.missilesFired, 1 do
         self.missilesFired[i]:remove()
+        self.missilesFired[i] = nil
     end
+    
+    self.missilesFired = nil
 end
 
 function Target:handleMovement()
@@ -37,13 +40,13 @@ function Target:handleMovement()
     if btnPressed(playdate.kButtonUp) and self.y > 0 then
         deltaY += -1
     end
-    if btnPressed(playdate.kButtonDown) and self.y < screenHeight then
+    if btnPressed(playdate.kButtonDown) and self.y < 240 then
         deltaY += 1
     end
     if btnPressed(playdate.kButtonLeft) and self.x > 0 then
         deltaX += -1
     end
-    if btnPressed(playdate.kButtonRight) and self.x < screenWidth then
+    if btnPressed(playdate.kButtonRight) and self.x < 400 then
         deltaX += 1
     end
     
@@ -54,8 +57,8 @@ function Target:handleMovement()
 end
 
 function Target:handleFire()
-    if btnJustPressed(FireButton) and self.curMissiles > 0 then
-        local originVector = geometry.vector2D.new(screenWidth // 2, screenHeight)
+    if btnJustPressed(playdate.kButtonA) and self.curMissiles > 0 then
+        local originVector = geometry.vector2D.new(400 // 2, 240)
         local goalVector = geometry.vector2D.new(self.x, self.y)
         self.missilesFired[#self.missilesFired+1] =  Missile(originVector, goalVector, self.gameManager)
         self.curMissiles -= 1

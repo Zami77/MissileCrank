@@ -19,7 +19,7 @@ function City:init(xOrigin)
 	local sprX, sprY = self:getSize()
 	self:setCollideRect(0, 0, sprX, sprY)
 	self:setGroups(CityGroup)
-	self:moveTo(xOrigin, screenHeight - sprY // 2)
+	self:moveTo(xOrigin, 240 - sprY // 2)
 	self:setZIndex(cityZIndex)
 end
 
@@ -27,8 +27,6 @@ function City:destroy()
 	local cityDestroyedImage = gfx.image.new("images/cities/city-destroyed")
 	self:setImage(cityDestroyedImage)
 	self.state = cityStates.DESTROYED
-
-	audioManager:playCityExplosion()
 end
 
 function City:isActive()
