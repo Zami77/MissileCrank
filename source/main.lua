@@ -34,6 +34,7 @@ end
 function loadGameData()
     local gameData = playdate.datastore.read()
     if gameData then
+        printTable(gameData)
         gameManager:loadSaveGameData(gameData)
     end
 end

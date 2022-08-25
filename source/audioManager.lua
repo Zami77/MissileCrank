@@ -1,5 +1,5 @@
 local snd <const> = playdate.sound
-local normalVolume = 0.1
+local normalVolume = 0.5
 local shortBurst = 0.1
 local mediumBurst = 0.2
 

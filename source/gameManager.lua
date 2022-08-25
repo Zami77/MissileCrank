@@ -57,6 +57,7 @@ end
 function GameManager:createSaveGameData()
     return {
         curLevel = self.curLevel,
+        cities = self.cities,
         maxMissiles = self.maxMissiles,
         targetSpeed = self.targetSpeed,
         spawnRate = self.spawnRate,
@@ -67,8 +68,22 @@ function GameManager:createSaveGameData()
     }
 end
 
+function GameManager:loadGameDataCities()
+    for i=1, #self.cities, 1 do
+        self.cities[i] = createGameDataCity(self.cities[i])
+    end
+end
+
 function GameManager:loadSaveGameData(gameData)
+    if not gameData then
+        return
+    end
+    
     self.curLevel = gameData.curLevel
+    
+    self.cities = gameData.cities
+    self:loadGameDataCities()
+    
     self.maxMissiles = gameData.maxMissiles
     self.targetSpeed = gameData.targetSpeed
     self.spawnRate = gameData.spawnRate

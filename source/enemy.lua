@@ -75,7 +75,7 @@ function Enemy:handleCollisions()
 			--if collidedObj:isa(Enemy) and self:alphaCollision(collidedObj) then
 			--	collidedObj:explosion()
 			--end
-			if collidedObj:isa(City) and self:alphaCollision(collidedObj) then
+			if collidedObj:isa(City) and collidedObj:isActive() and self:alphaCollision(collidedObj) then
 				collidedObj:destroy()
 			end
 		end

@@ -21,7 +21,6 @@ function City:init(xOrigin)
 	self:setGroups(CityGroup)
 	self:moveTo(xOrigin, screenHeight - sprY // 2)
 	self:setZIndex(cityZIndex)
-	self:add()
 end
 
 function City:destroy()
@@ -34,4 +33,16 @@ end
 
 function City:isActive()
 	return self.state == cityStates.ACTIVE
+end
+
+function createGameDataCity(gameDataCity)
+	local newCity = City(gameDataCity.x)
+	newCity.state = gameDataCity.state
+	
+	if newCity.state == cityStates.DESTROYED then
+		local cityDestroyedImage = gfx.image.new("images/cities/city-destroyed")
+		newCity:setImage(cityDestroyedImage)
+	end
+	
+	return newCity
 end
