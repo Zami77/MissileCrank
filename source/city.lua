@@ -28,6 +28,8 @@ function City:destroy()
 	local cityDestroyedImage = gfx.image.new("images/cities/city-destroyed")
 	self:setImage(cityDestroyedImage)
 	self.state = cityStates.DESTROYED
+
+	audioManager:playCityExplosion()
 end
 
 function City:isActive()

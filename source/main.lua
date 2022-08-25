@@ -7,6 +7,7 @@ import "CoreLibs/animation"
 import "CoreLibs/ui"
 import "CoreLibs/nineslice"
 
+import "audioManager"
 import "globals"
 import "enemySpawner"
 import "level"
