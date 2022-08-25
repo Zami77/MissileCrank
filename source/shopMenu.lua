@@ -147,7 +147,6 @@ function ShopMenu:HandleMenuSelect()
 			success = true
 		else
 			self.popupText = 'Not enough scraps'
-			audioManager:playError()
 		end
 		self:startPopupTimer()
 	elseif selectedOption == convertScrap then

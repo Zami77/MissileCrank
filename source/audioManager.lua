@@ -28,18 +28,17 @@ function AudioManager:playCityExplosion()
 end
 
 function AudioManager:playMenuUp()
-	self.menuSynth:playNote('C5', normalVolume, shortBurst)
+	self.menuSynth:playNote('C4', normalVolume, shortBurst)
 end
 
 function AudioManager:playMenuDown()
-	self.menuSynth:playNote('G4', normalVolume, shortBurst)
+	self.menuSynth:playNote('G3', normalVolume, shortBurst)
 end
 
 function AudioManager:playConfirmation()
-	self.menuSynth:playNote('C6', normalVolume, shortBurst)
+	self.menuSynth:playNote('C5', normalVolume, shortBurst)
 end
 
 function AudioManager:playError()
-	self.menuSynth:playNote('F#0', normalVolume, shortBurst)
-	
+	self.explosionSynth:playNote('C1', normalVolume, shortBurst)
 end
