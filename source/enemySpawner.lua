@@ -8,21 +8,22 @@ local spawnStates = {
 
 class('EnemySpawner').extends()
 
-function EnemySpawner:init(spawnRate, enemyType)
+function EnemySpawner:init(spawnRate, enemyType, cities)
 	spawnRate = spawnRate or 5
 	enemyType = enemyType or enemyTypes.ENEMY_BASIC
 	self.state = spawnStates.RUNNING
 	self.spawnRate = math.max(spawnRate, 1000)
 	self.enemyType = enemyType
 	self.enemies = {}
+	self.cities = cities
 	EnemySpawner.super.init(self)
 end
 
-local function createEnemy(enemyType)
+local function createEnemy(enemyType, cities)
 	if enemyType == enemyTypes.ENEMY_BASIC then
-		return EnemyBasic()
+		return EnemyBasic(cities)
 	elseif enemyType == enemyTypes.ENEMY_FAST then
-		return EnemyFast()
+		return EnemyFast(cities)
 	end
 end
 
@@ -34,7 +35,7 @@ function EnemySpawner:createSpawnTimer()
 	local randSpawnRate = math.random(self.spawnRate - 1000, self.spawnRate)
 	
 	playdate.timer.performAfterDelay(randSpawnRate, function()
-		self.enemies[#self.enemies + 1] = createEnemy(self.enemyType)
+		self.enemies[#self.enemies + 1] = createEnemy(self.enemyType, self.cities)
 		self:createSpawnTimer()
 	end)
 	

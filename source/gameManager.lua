@@ -175,11 +175,11 @@ function GameManager:setupLevel()
     self.state = gameStates.LEVEL
     self.levelManager = Level(self, self.curLevel, self.cities)
     self.target = Target(self, self.targetSpeed, self.maxMissiles)
-    self.spawner = EnemySpawner(self.spawnRate)
+    self.spawner = EnemySpawner(self.spawnRate, enemyTypes.ENEMY_BASIC, self.cities)
     self.spawner:startSpawner()
 
     if self.curLevel >= startEnemyFastLevel then
-        self.spawnerFast = EnemySpawner(self.spawnRate * 2, enemyTypes.ENEMY_FAST)
+        self.spawnerFast = EnemySpawner(self.spawnRate * 2, enemyTypes.ENEMY_FAST, self.cities)
         self.spawnerFast:startSpawner()
     end
 
