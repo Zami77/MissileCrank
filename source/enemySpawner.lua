@@ -35,8 +35,10 @@ function EnemySpawner:createSpawnTimer()
 	local randSpawnRate = math.random(self.spawnRate - 1000, self.spawnRate)
 	
 	playdate.timer.performAfterDelay(randSpawnRate, function()
-		self.enemies[#self.enemies + 1] = createEnemy(self.enemyType, self.cities)
-		self:createSpawnTimer()
+		if self.state == spawnStates.RUNNING then
+			self.enemies[#self.enemies + 1] = createEnemy(self.enemyType, self.cities)
+			self:createSpawnTimer()
+		end
 	end)
 	
 end
