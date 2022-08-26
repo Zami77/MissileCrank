@@ -188,9 +188,7 @@ function GameManager:setupLevel()
     self.ui = UIOverlay(self, self.target)
 end
 
-function GameManager:deactivateLevel()
-    self.state = gameStates.SHOP_MENU
-    
+function GameManager:deactivateLevel()    
     if self.levelManager then
         self.levelManager:remove()
         self.levelManager = nil
@@ -218,6 +216,8 @@ function GameManager:deactivateLevel()
         self.ui:remove()
         self.ui = nil
     end
+    
+    self:stopAllSpawners()
 end
 
 function GameManager:stopAllSpawners()
