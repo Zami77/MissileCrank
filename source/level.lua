@@ -8,7 +8,7 @@ local levelMap = {
 }
 
 local backgroundMap = {
-    "DefaultBackground"
+    "BackgroundStars"
 }
 
 function Level:loadLevel()
@@ -76,6 +76,8 @@ function Level:init(gameManager, curLevel, cities, levelLength, x, y)
     self.endLevelBufferTimer = pd.timer.new(secondsToMs(endLevelBufferLength))
     self.endLevelBufferTimer:pause()
     self.spawnersStopped = false
+
+    self.checkEnemyTimer = pd.timer.new()
 end
 
 function Level:areCitiesAlive()
@@ -129,7 +131,18 @@ function Level:update()
     end
 
     if self.levelTimer.timeLeft == 0 then
-        if not self.gameManager:areThereEnemies() then
+        local anyEnemies = true
+
+        if not self.checkEnemyTimer then
+            self.checkEnemyTimer = pd.timer.new(1000)
+        end
+
+        if self.checkEnemyTimer.timeLeft == 0 then
+            anyEnemies = self.gameManager:areThereEnemies()
+            self.checkEnemyTimer = pd.timer.new(1000)
+        end
+
+        if not anyEnemies then
             self.endLevelBufferTimer:start()
         end
     end
