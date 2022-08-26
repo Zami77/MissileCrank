@@ -332,6 +332,23 @@ function GameManager:getGameOverStats()
     return self.gameOverScore, self.gameOverScraps, self.gameOverLevel
 end
 
+function GameManager:setupPauseMenuStats()
+    local pauseMenu = gfx.image.new(screenWidth, screenHeight)
+    local fontHeight = gfx.getSystemFont():getHeight()
+    gfx.pushContext(pauseMenu)
+        gfx.setImageDrawMode(gfx.kDrawModeFillBlack)
+        gfx.fillRect(0, 0, screenWidth, screenHeight)
+        gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
+        gfx.drawTextInRect("Score: " .. self.score, 0, 0, 250, fontHeight)
+        gfx.drawTextInRect("Scraps: " .. self.scraps, 0, fontHeight * 1, 250, fontHeight)
+        gfx.drawTextInRect("Target Speed: " .. self.targetSpeed, 0, fontHeight * 2, 250, fontHeight)
+        gfx.drawTextInRect("Missile Speed: " .. self.missileSpeed, 0, fontHeight * 3, 250, fontHeight)
+        gfx.drawTextInRect("Max Missiles: " .. self.maxMissiles, 0, fontHeight * 4, 250, fontHeight)
+        gfx.drawTextInRect("Level: " .. self.maxMissiles, 0, fontHeight * 5, 250, fontHeight)
+    gfx.popContext()
+    playdate.setMenuImage(pauseMenu)
+end
+
 function GameManager:update()
     if self.state == gameStates.MAIN_MENU then
         self.mainMenu:update()

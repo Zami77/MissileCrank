@@ -48,6 +48,12 @@ function playdate.deviceWillSleep()
     saveGameData()
 end
 
+function playdate.gameWillPause()
+    if gameManager then
+        gameManager:setupPauseMenuStats()
+    end
+end
+
 function init()
     math.randomseed(playdate.getSecondsSinceEpoch())
     gameManager = GameManager()
