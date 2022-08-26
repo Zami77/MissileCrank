@@ -1,2 +1,2 @@
 # MissileCrank
- A playdate game based on the classlic Missile Command!
+ A playdate game based on the classic Missile Command!
