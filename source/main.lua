@@ -58,6 +58,7 @@ function init()
     math.randomseed(playdate.getSecondsSinceEpoch())
     gameManager = GameManager()
     loadGameData()
+    gameManager:setupMainMenu()
 
     -- Adjust this value for screen shutter
     --playdate.setGCScaling(0, 0.5)

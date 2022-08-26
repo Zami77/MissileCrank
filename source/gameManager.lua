@@ -41,6 +41,11 @@ function GameManager:init()
     self.gameOverLevel = self.curLevel
         
     self.levelManager = nil
+    self.midLevel = false
+    self.startLevelScore = 0
+    self.startLevelScraps = 0
+    self.startLevelCities = nil
+    
     self.target = nil
     self.spawner = nil
     self.spawnerFast = nil
@@ -58,6 +63,12 @@ function GameManager:init()
 end
 
 function GameManager:createSaveGameData()
+    if self.midLevel then
+        self.score = self.startLevelScore
+        self.scraps = self.startLevelScraps
+        self.cities = self.startLevelCities
+    end
+    
     return {
         curLevel = self.curLevel,
         cities = self.cities,
@@ -98,8 +109,6 @@ function GameManager:loadSaveGameData(gameData)
     self.highScore = gameData.highScore
 
     self.hasSaveData = true
-
-    self.mainMenu:foundGameData()
 end
 
 function GameManager:clearData()
@@ -186,6 +195,11 @@ function GameManager:setupLevel()
     end
 
     self.ui = UIOverlay(self, self.target)
+    
+    self.midLevel = true
+    self.startLevelScore = self.score
+    self.startLevelScraps = self.scraps
+    self.startLevelCities = deepcopy(self.cities)
 end
 
 function GameManager:deactivateLevel()    
@@ -218,6 +232,8 @@ function GameManager:deactivateLevel()
     end
     
     self:stopAllSpawners()
+    
+    self.midLevel = false
 end
 
 function GameManager:stopAllSpawners()
@@ -344,7 +360,7 @@ function GameManager:setupPauseMenuStats()
         gfx.drawTextInRect("Target Speed: " .. self.targetSpeed, 0, fontHeight * 2, 250, fontHeight)
         gfx.drawTextInRect("Missile Speed: " .. self.missileSpeed, 0, fontHeight * 3, 250, fontHeight)
         gfx.drawTextInRect("Max Missiles: " .. self.maxMissiles, 0, fontHeight * 4, 250, fontHeight)
-        gfx.drawTextInRect("Level: " .. self.maxMissiles, 0, fontHeight * 5, 250, fontHeight)
+        gfx.drawTextInRect("Level: " .. self.curLevel, 0, fontHeight * 5, 250, fontHeight)
     gfx.popContext()
     playdate.setMenuImage(pauseMenu)
 end

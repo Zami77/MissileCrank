@@ -28,7 +28,7 @@ function AudioManager:playCityExplosion()
 end
 
 function AudioManager:playMenuUp()
-	self.menuSynth:playNote('C4', normalVolume, shortBurst)
+	self.menuSynth:playNote('A3', normalVolume, shortBurst)
 end
 
 function AudioManager:playMenuDown()
@@ -36,7 +36,7 @@ function AudioManager:playMenuDown()
 end
 
 function AudioManager:playConfirmation()
-	self.menuSynth:playNote('C5', normalVolume, shortBurst)
+	self.menuSynth:playNote('B4', normalVolume, shortBurst)
 end
 
 function AudioManager:playError()

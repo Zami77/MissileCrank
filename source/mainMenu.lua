@@ -1,12 +1,11 @@
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
-local startGame = "Start Game"
+local startGame = "New Run"
 local instructions = "Instructions"
-local continueGame = "Continue Game"
+local continueGame = "Continue Run"
 local menuOptions = {
 	startGame,
-	instructions,
-	continueGame
+	instructions
 }
 local gridview = pd.ui.gridview.new(0, 32)
 local gridviewSprite = gfx.sprite.new()
@@ -30,6 +29,14 @@ function MainMenu:init(gameManager)
 	--self.super.init(self)
 	self.gameManager = gameManager
 	self.showInstructions = false
+		
+	if self.gameManager:getLevel() > 1 then
+		menuOptions = {
+			continueGame,
+			startGame,
+			instructions
+		}
+	end
 	
 	gridview:setNumberOfRows(#menuOptions)
 	gridview:setCellPadding(2, 2, 2, 2)
@@ -40,16 +47,8 @@ function MainMenu:init(gameManager)
 	gridviewSprite:setCenter(0, 0)
 	gridviewSprite:moveTo(100, 70)
 	gridviewSprite:add()
-
-	
-	
+		
 	self:setBackground()
-end
-
-function MainMenu:foundGameData()
-	if self.gameManager:doesHaveSaveData() then
-		menuOptions[#menuOptions+1] = continueGame
-	end
 end
 
 function gridview:drawCell(section, row, column, selected, x, y, width, height)
