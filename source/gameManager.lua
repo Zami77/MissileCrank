@@ -134,7 +134,7 @@ function GameManager:setupMainMenu()
     self:deactivateGameOver()
     self:deactivateShopMenu()
     gfx.clear()
-    -- TODO: deactivate shop menu
+
     self.state = gameStates.MAIN_MENU
     self.mainMenu = MainMenu(self)
 end
@@ -150,7 +150,7 @@ function GameManager:setupShopMenu()
     self:deactivateGameOver()
     self:deactivateMainMenu()
     gfx.clear()
-    -- TODO: deactivate shop menu
+
     self.state = gameStates.SHOP_MENU
     self.shopMenu = ShopMenu(self)
 end
@@ -183,7 +183,6 @@ function GameManager:setupLevel()
     self:deactivateGameOver()
     self:deactivateShopMenu()
     gfx.clear()
-    -- TODO: deactivate shop menu
     
     self.state = gameStates.LEVEL
     self.levelManager = Level(self, self.curLevel, self.cities)
