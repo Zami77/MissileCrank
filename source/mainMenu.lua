@@ -16,7 +16,7 @@ class('MainMenu').extends(gfx.sprite)
 
 function MainMenu:setBackground()
     local backgroundImage = nil
-    backgroundImage = gfx.image.new("images/backgrounds/DefaultBackgroundWhite")
+    backgroundImage = gfx.image.new("images/backgrounds/MainMenuBackground")
     assert(backgroundImage)
     
     gfx.sprite.setBackgroundDrawingCallback(
@@ -54,15 +54,16 @@ end
 
 function gridview:drawCell(section, row, column, selected, x, y, width, height)
 	gfx.pushContext()
+		local fontHeight = gfx.getSystemFont():getHeight()
 		if selected then
-			gfx.fillRoundRect(x, y, width, height, 4)
 			gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
+			gfx.fillRoundRect(x, y, width, height, 4)
+			gfx.drawTextInRect('| ' .. menuOptions[row] .. ' |', x, y + (height // 2 - fontHeight // 2), width, height, nil, nil, kTextAlignment.center)
 		else
-			gfx.setImageDrawMode(gfx.kDrawModeCopy)
+			gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
+			gfx.drawTextInRect(menuOptions[row], x, y + (height // 2 - fontHeight // 2), width, height, nil, nil, kTextAlignment.center)
 		end
 		
-		local fontHeight = gfx.getSystemFont():getHeight()
-		gfx.drawTextInRect(menuOptions[row], x, y + (height // 2 - fontHeight // 2), width, height, nil, nil, kTextAlignment.center)
 	gfx.popContext()
 end
 
