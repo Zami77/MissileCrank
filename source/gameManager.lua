@@ -21,6 +21,8 @@ local startMissileSpeed = 4
 
 local startEnemyFastLevel = 5
 
+local cityScore = 20
+
 function GameManager:init()
     GameManager.super.init(self)
     
@@ -199,7 +201,7 @@ function GameManager:setupLevel()
     self.midLevel = true
     self.startLevelScore = self.score
     self.startLevelScraps = self.scraps
-    self.startLevelCities = deepcopy(self.cities)
+    self.startLevelCities = self.cities
 end
 
 function GameManager:deactivateLevel()    
@@ -275,9 +277,21 @@ function GameManager:clearStats()
     self.missileSpeed = startMissileSpeed
 end
 
+local function addUpCityScores(cities)
+    res = 0
+    for i=1, #cities, 1 do
+        if cities[i]:isActive() then
+            res += cityScore
+        end
+    end
+    
+    return res
+end
+
 function GameManager:levelSuccess()
     self.curLevel += 1
     self.spawnRate = math.max(math.floor(0.9 * self.spawnRate), 1000)
+    self.score += addUpCityScores(self.cities)
     self:setupShopMenu()
 end
 
