@@ -30,8 +30,17 @@ function GameOver:init(gameManager)
     self:setBackground()
 
     self.gameOverScore, self.gameOverScraps, self.gameOverLevel = self.gameManager:getGameOverStats()
+
+    local shopKeeperDeadImage = gfx.image.new('images/ui/ShopKeeperDead')
+    self.shopKeeperDeadSprite = gfx.sprite.new(shopKeeperDeadImage)
+    self.shopKeeperDeadSprite:setZIndex(uiZindex)
+    self.shopKeeperDeadSprite:moveTo(screenWidth - 48, screenHeight // 2)
+    self.shopKeeperDeadSprite:add()
 end
 
+function GameOver:cleanup()
+    self.shopKeeperDeadSprite:remove()
+end
 
 function GameOver:update()
 	gfx.pushContext()

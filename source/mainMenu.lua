@@ -117,5 +117,15 @@ function MainMenu:update()
 			audioManager:playConfirmation()
 			self:HandleMenuSelect()
 		end
+
+		-- Display High Score
+		local highScore = self.gameManager:getHighScore()
+		if highScore and highScore > 0 then
+			gfx.pushContext()
+				gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
+				local fontHeight = gfx.getSystemFont():getHeight()
+				gfx.drawTextInRect("High Score: " .. highScore, screenWidth // 2 - 100, screenHeight - fontHeight, 200, fontHeight, nil, nil, kTextAlignment.center)
+			gfx.popContext()
+		end
 	end
 end

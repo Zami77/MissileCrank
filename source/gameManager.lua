@@ -175,6 +175,8 @@ end
 function GameManager:deactivateGameOver()
     if self.gameOver then
         self.gameOver:remove()
+        self.gameOver:cleanup()
+        self.gameOver = nil
     end
 end
 
@@ -359,6 +361,10 @@ end
 
 function GameManager:getGameOverStats()
     return self.gameOverScore, self.gameOverScraps, self.gameOverLevel
+end
+
+function GameManager:getHighScore()
+    return self.highScore
 end
 
 function GameManager:setupPauseMenuStats()
