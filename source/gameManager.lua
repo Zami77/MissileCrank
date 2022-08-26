@@ -147,6 +147,8 @@ end
 function GameManager:deactivateShopMenu()
     if self.shopMenu then
         self.shopMenu:remove()
+        self.shopMenu:cleanup()
+        self.shopMenu = nil
     end
 end
 

@@ -5,6 +5,8 @@ local itemOptions = {}
 local gridview = pd.ui.gridview.new(0, 32)
 local gridviewSprite = gfx.sprite.new()
 
+local shopKeeperSprite = gfx.sprite.new()
+
 local maxMissileUpgrade = 12
 local maxTargetSpeedUpgrade = 6
 local maxMissileSpeedUpgrade = 8
@@ -23,7 +25,7 @@ class('ShopMenu').extends(gfx.sprite)
 
 function ShopMenu:setBackground()
     local backgroundImage = nil
-    backgroundImage = gfx.image.new("images/backgrounds/DefaultBackgroundWhite")
+    backgroundImage = gfx.image.new("images/backgrounds/ShopBackground")
     assert(backgroundImage)
     
     gfx.sprite.setBackgroundDrawingCallback(
@@ -55,9 +57,10 @@ end
 
 function ShopMenu:init(gameManager)
 	self.gameManager = gameManager
-	self.startTimer = pd.timer.new(1000)
-	self.popupTimer = pd.timer.new(0)
-	self.popupText = ''
+	self.startTimer = pd.timer.new(500)
+	self.popupTimer = pd.timer.new()
+	self.popupText = 'Welcome to the Command Shop!'
+	self:startPopupTimer()
 
 	self:fillItemOptions()
 	
@@ -68,23 +71,30 @@ function ShopMenu:init(gameManager)
 	gridview:setContentInset(5, 5, 5, 5)
 	
 	gridviewSprite:setCenter(0, 0)
-	gridviewSprite:moveTo(100, 70)
+	gridviewSprite:moveTo(100, screenHeight - 120)
 	gridviewSprite:add()
+
+	local shopKeeperImage = gfx.image.new("images/ui/ShopKeeper")
+	shopKeeperSprite:setImage(shopKeeperImage)
+	shopKeeperSprite:setZIndex(uiZindex)
+	shopKeeperSprite:moveTo(screenWidth - 48, screenHeight // 2 - 25)
+	shopKeeperSprite:add()
 	
 	self:setBackground()
 end
 
 function gridview:drawCell(section, row, column, selected, x, y, width, height)
 	gfx.pushContext()
+		local fontHeight = gfx.getSystemFont():getHeight()
 		if selected then
-			gfx.fillRoundRect(x, y, width, height, 4)
 			gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
+			gfx.fillRoundRect(x, y, width, height, 4)
+			gfx.drawTextInRect('| ' .. itemOptions[row] .. ' |', x, y + (height // 2 - fontHeight // 2), width, height, nil, nil, kTextAlignment.center)
 		else
-			gfx.setImageDrawMode(gfx.kDrawModeCopy)
+			gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
+			gfx.drawTextInRect(itemOptions[row], x, y + (height // 2 - fontHeight // 2), width, height, nil, nil, kTextAlignment.center)
 		end
 		
-		local fontHeight = gfx.getSystemFont():getHeight()
-		gfx.drawTextInRect(itemOptions[row], x, y + (height // 2 - fontHeight // 2), width, height, nil, nil, kTextAlignment.center)
 	gfx.popContext()
 end
 
@@ -178,7 +188,7 @@ function ShopMenu:displayPrice()
 	end
 
 	gfx.pushContext()
-		gfx.setImageDrawMode(gfx.kDrawModeFillBlack)
+		gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
 		gfx.drawText("Price: " .. price, screenWidth - 75, 0)
 		gfx.drawText("Scraps: " .. self.gameManager:getScraps(), 0, 0)
 		gfx.drawText("Score: " .. self.gameManager:getScore(), 0, screenHeight - gfx.getSystemFont():getHeight())
@@ -187,12 +197,16 @@ function ShopMenu:displayPrice()
 end
 
 function ShopMenu:displayPopup()
-	local popupWidth = 200
+	local popupWidth = 400
 	local popupHeight = gfx.getSystemFont():getHeight()
 	gfx.pushContext()
-		gfx.setImageDrawMode(gfx.kDrawModeFillBlack)
-		gfx.drawTextInRect(self.popupText, screenWidth // 2 - popupWidth // 2, screenHeight // 4 - popupHeight, popupWidth, popupHeight, nil, nil, kTextAlignment.center)
+		gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
+		gfx.drawTextInRect(self.popupText, screenWidth // 2 - popupWidth // 2, screenHeight // 3, popupWidth, popupHeight, nil, nil, kTextAlignment.center)
 	gfx.popContext()
+end
+
+function ShopMenu:cleanup()
+	shopKeeperSprite:remove()
 end
 
 function ShopMenu:update()
