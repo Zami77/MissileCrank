@@ -137,12 +137,16 @@ function GameManager:setupMainMenu()
 
     self.state = gameStates.MAIN_MENU
     self.mainMenu = MainMenu(self)
+
+    audioManager:playMainMenuThemeSong()
 end
 
 function GameManager:deactivateMainMenu()
     if self.mainMenu then
         self.mainMenu:remove()
     end
+
+    audioManager:stopMainMenuThemeSong()
 end
 
 function GameManager:setupShopMenu()
@@ -153,6 +157,8 @@ function GameManager:setupShopMenu()
 
     self.state = gameStates.SHOP_MENU
     self.shopMenu = ShopMenu(self)
+
+    audioManager:playShopMenuThemeSong()
 end
 
 function GameManager:deactivateShopMenu()
@@ -161,6 +167,8 @@ function GameManager:deactivateShopMenu()
         self.shopMenu:cleanup()
         self.shopMenu = nil
     end
+
+    audioManager:stopShopMenuThemeSong()
 end
 
 function GameManager:setupGameOver()
@@ -203,6 +211,8 @@ function GameManager:setupLevel()
     self.startLevelScore = self.score
     self.startLevelScraps = self.scraps
     self.startLevelCities = self.cities
+
+    audioManager:playBattleThemeSong()
 end
 
 function GameManager:deactivateLevel()    
@@ -237,6 +247,8 @@ function GameManager:deactivateLevel()
     self:stopAllSpawners()
     
     self.midLevel = false
+
+    audioManager:stopBattleThemeSong()
 end
 
 function GameManager:stopAllSpawners()
@@ -395,6 +407,4 @@ function GameManager:update()
     elseif self.state == gameStates.GAME_OVER then
         self.gameOver:update()
     end
-
-    playdate.drawFPS(0, 80)
 end

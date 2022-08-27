@@ -2,5 +2,5 @@ name=Missile Crank
 author=Dan Lungaro
 description=Missile Crank is heavily based off of the classic Missile Command!
 bundleID=com.yatchstudios.missilecrank
-version=0.0.61
+version=0.0.7
 imagePath=images/launcher/Launcher-Card

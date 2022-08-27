@@ -9,6 +9,10 @@ function AudioManager:init()
 	self.missileSynth = snd.synth.new(snd.kWaveSawtooth)
 	self.explosionSynth = snd.synth.new(snd.kWaveNoise)
 	self.menuSynth = snd.synth.new(snd.kWaveSine)
+
+	self.battleThemeSong = snd.fileplayer.new('sounds/Battle Theme 1')
+	self.mainMenuThemeSong = snd.fileplayer.new('sounds/Main Menu Theme')
+	self.shopMenuThemeSong = snd.fileplayer.new('sounds/Shop Theme')
 end
 
 function AudioManager:playMissileLaunch()
@@ -41,4 +45,28 @@ end
 
 function AudioManager:playError()
 	self.explosionSynth:playNote('C1', normalVolume, shortBurst)
+end
+
+function AudioManager:playBattleThemeSong()
+	self.battleThemeSong:play(0)
+end
+
+function AudioManager:stopBattleThemeSong()
+	self.battleThemeSong:stop()
+end
+
+function AudioManager:playMainMenuThemeSong()
+	self.mainMenuThemeSong:play(0)
+end
+
+function AudioManager:stopMainMenuThemeSong()
+	self.mainMenuThemeSong:stop()
+end
+
+function AudioManager:playShopMenuThemeSong()
+	self.shopMenuThemeSong:play(0)
+end
+
+function AudioManager:stopShopMenuThemeSong()
+	self.shopMenuThemeSong:stop()
 end
