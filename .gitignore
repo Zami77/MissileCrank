@@ -46,3 +46,6 @@ builds/*
 .nova
 .sentry-native
 .vscode
+
+# Mac
+*.DS_Store
