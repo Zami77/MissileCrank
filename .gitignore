@@ -41,3 +41,8 @@ luac.out
 
 # builds
 builds/*
+
+# code editor settings
+.nova
+.sentry-native
+.vscode
