@@ -1,4 +1,8 @@
 # Missile Crank
+
+## [Please visit the itch.io page!](https://yatchstudios.itch.io/missile-crank)
+
+## Description
 Missile Crank is a Missile Command-inspired game where you destroy enemy ships before they crash into your cities!
 
 You begin the game with 5 cities that each produce 20 points for you at the end of each level (as long as they stay alive!).
