@@ -64,8 +64,8 @@ function Missile:handleCollisions()
     
     if collisions then
         for index, collision in ipairs(collisions) do
-            collidedObj = collision['other']
-            if collidedObj:isa(Enemy) and collidedObj:isAlive() and self:alphaCollision(collidedObj) then
+            local collidedObj = collision['other']
+            if collidedObj:isa(Enemy) and collidedObj:isAlive() then
                 self.gameManager:addScore(collidedObj:getPoints())
                 self.gameManager:addScraps(collidedObj:getScraps())
                 collidedObj:explosion()
