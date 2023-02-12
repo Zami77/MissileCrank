@@ -95,11 +95,9 @@ function Enemy:handleCollisions()
 	
 	if collisions then
 		for index, collision in ipairs(collisions) do
-			collidedObj = collision['other']
-			--if collidedObj:isa(Enemy) and self:alphaCollision(collidedObj) then
-			--	collidedObj:explosion()
-			--end
-			if collidedObj:isa(City) and collidedObj:isActive() and self:alphaCollision(collidedObj) then
+			local collidedObj = collision['other']
+
+			if collidedObj:isa(City) and collidedObj:isActive() then
 				collidedObj:destroy()
 			end
 		end
@@ -112,7 +110,7 @@ function Enemy:update()
 		
 		local posVector = geometry.vector2D.new(self.x, self.y)
 		
-		if inVicinityOf(posVector, self.goal) then
+		if self.y >= (screenHeight - 15) and inVicinityOf(posVector, self.goal) then
 			self:explosion()
 		end
 	elseif self.state == enemyStates.EXPLODING then
